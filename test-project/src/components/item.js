@@ -12,6 +12,9 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import NotesSharpIcon from "@material-ui/icons/NotesSharp";
 import NoteOutlinedIcon from "@material-ui/icons/NoteOutlined";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import EditIcon from "@material-ui/icons/Edit";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,6 +48,9 @@ const useStyles = makeStyles(theme => ({
   helper: {
     borderLeft: `2px solid ${theme.palette.divider}`,
     padding: theme.spacing(1, 2)
+  },
+  dropdown: {
+    alignItems: "center"
   },
   link: {
     color: theme.palette.primary.main,
@@ -141,8 +147,25 @@ function Items(props) {
                 <Typography>{item.status}</Typography>
               </div>
             </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography>{item.description}</Typography>
+            <ExpansionPanelDetails justify="center">
+              <Paper
+                elevation={3}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexWrap: "wrap"
+                }}
+              >
+                <Chip
+                  label="Edit"
+                  onClick={() => {}}
+                  deleteIcon={<EditIcon />}
+                  variant="outlined"
+                />
+                <Typography style={{ padding: 20 }}>
+                  {item.description}
+                </Typography>
+              </Paper>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         );
