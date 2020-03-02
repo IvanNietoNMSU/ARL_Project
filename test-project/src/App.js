@@ -1,3 +1,53 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bb8fc2c1c5018c5d463f4aed336974133df1b300634d1d6e8cf4bbfe68aade59
-size 1403
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import "./App.css";
+import Navigation from "./components/navigation";
+import TextEdit from "./components/texteditor";
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <p>
+          Edit <code>/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+    // <main>
+    //   <Switch>
+    //     <Route path="/" extract component={() => <Navigation main={<Home/>}/>} exact />
+    //     <Route path="/Nav" component={() => <Navigation main={<TextEdit/>}/>} />
+    //   </Switch>
+    // </main>
+  );
+}
+
+export default App;
+
+function Home() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <p>
+          Edit <code>/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
