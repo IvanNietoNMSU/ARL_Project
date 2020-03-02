@@ -18,7 +18,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import LoopIcon from "@material-ui/icons/Loop";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { withRouter, Redirect } from "react-router-dom";
 import GetAllProjects from "../scrypts/getProjects";
 
 const drawerWidth = 240;
@@ -175,6 +174,7 @@ function Navigation(props) {
           </ListItem>
         </List>
         <Divider />
+        {/* Projects */}
         <GetAllProjects />
       </Drawer>
       <main className={classes.content}>
