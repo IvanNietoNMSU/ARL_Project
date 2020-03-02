@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dde814614c86208e086bec2f88cbc30c0ca0af0cd7ac0c59c66c8576efd79871
-size 745
+import React from "react";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import LabelImportantIcon from "@material-ui/icons/LabelImportant";
+
+function GetAllProjects() {
+  let projects = ["P1", "P2"];
+
+  return (
+    <List>
+      {projects.map(p => {
+        return (
+          <ListItem button key={p}>
+            <ListItemIcon>
+              <LabelImportantIcon />
+            </ListItemIcon>
+            <ListItemText primary={p} />
+          </ListItem>
+        );
+      })}
+    </List>
+  );
+} //end GetAllProjects
+
+export default GetAllProjects;
