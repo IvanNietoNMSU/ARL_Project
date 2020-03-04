@@ -1,53 +1,38 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import "./App.css";
-import Navigation from "./components/navigation";
+import { HashRouter, Route, Switch } from "react-router-dom";
+
 import TextEdit from "./components/texteditor";
+import Navigation from "./components/navigation";
+import AllNotes from "./pages/allnotes";
+import Home from "./pages/home";
+import SyncNotes from "./pages/syncNotes";
+import NewProject from "./pages/newProject";
+import DeleteProject from "./pages/deleteProject";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-    // <main>
-    //   <Switch>
-    //     <Route path="/" extract component={() => <Navigation main={<Home/>}/>} exact />
-    //     <Route path="/Nav" component={() => <Navigation main={<TextEdit/>}/>} />
-    //   </Switch>
-    // </main>
+    <main>
+      <HashRouter>
+        <Navigation
+          main={
+            <Switch>
+              <Route path="/" extract component={Home} exact />
+              <Route path="/Nav" component={TextEdit} />
+              <Route path="/SyncNotes" component={SyncNotes} />
+              <Route path="/DeleteProject" component={DeleteProject} />
+              <Route path="/NewProject" component={NewProject} />
+              <Route path="/AllNotes" component={AllNotes} />
+            </Switch>
+          }
+        />
+      </HashRouter>
+    </main>
   );
 }
+
+// <Route
+//   path="/NewProject"
+//   component={() => <Navigation main={<NewProject />} />}
+// />;
 
 export default App;
-
-function Home() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}

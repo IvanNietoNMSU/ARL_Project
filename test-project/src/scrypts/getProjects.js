@@ -4,24 +4,31 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import LabelImportantIcon from "@material-ui/icons/LabelImportant";
+import { Link } from "react-router-dom";
 
-function GetAllProjects() {
-  let projects = ["P1", "P2"];
-
-  return (
-    <List>
-      {projects.map(p => {
-        return (
-          <ListItem button key={p}>
-            <ListItemIcon>
-              <LabelImportantIcon />
-            </ListItemIcon>
-            <ListItemText primary={p} />
-          </ListItem>
-        );
-      })}
-    </List>
-  );
+class GetAllProjects extends React.Component {
+  render() {
+    let projects = ["P1", "P2"];
+    return (
+      <List>
+        {projects.map(p => {
+          return (
+            <Link
+              to={{ pathname: "/AllNotes", AllNotesProps: p }}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItem button key={p}>
+                <ListItemIcon>
+                  <LabelImportantIcon />
+                </ListItemIcon>
+                <ListItemText primary={p} />
+              </ListItem>
+            </Link>
+          );
+        })}
+      </List>
+    );
+  }
 } //end GetAllProjects
 
 export default GetAllProjects;

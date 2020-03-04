@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -19,7 +19,7 @@ import LoopIcon from "@material-ui/icons/Loop";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GetAllProjects from "../scrypts/getProjects";
-import { HashRouter, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -97,10 +97,6 @@ function Navigation(props) {
     setOpen(false);
   };
 
-  const handleRedirect = () => {
-    return <Link to="/home" />; //<Redirect to='/Nav'/>
-  };
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -122,9 +118,11 @@ function Navigation(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            DAC Project
-          </Typography>
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            <Typography variant="h6" noWrap>
+              DAC Project
+            </Typography>
+          </Link>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -152,27 +150,42 @@ function Navigation(props) {
         <Divider />
         <List>
           {/* Sync Notes Button */}
-          <ListItem button key="Sync" onClick={handleRedirect}>
-            <ListItemIcon>
-              <LoopIcon />
-            </ListItemIcon>
-            <ListItemText primary="syncNotes" />
-          </ListItem>
+          <Link
+            to="/SyncNotes"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItem button key="Sync">
+              <ListItemIcon>
+                <LoopIcon />
+              </ListItemIcon>
+              <ListItemText primary="syncNotes" />
+            </ListItem>
+          </Link>
 
           {/* New Project Button */}
-          <ListItem button key="newProject">
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
-            <ListItemText primary="New Project" />
-          </ListItem>
+          <Link
+            to="/NewProject"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItem button key="newProject">
+              <ListItemIcon>
+                <AddIcon />
+              </ListItemIcon>
+              <ListItemText primary="New Project" />
+            </ListItem>
+          </Link>
 
-          <ListItem button key="deleteProject">
-            <ListItemIcon>
-              <DeleteIcon />
-            </ListItemIcon>
-            <ListItemText primary="Delete Project" />
-          </ListItem>
+          <Link
+            to="/DeleteProject"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItem button key="deleteProject">
+              <ListItemIcon>
+                <DeleteIcon />
+              </ListItemIcon>
+              <ListItemText primary="Delete Project" />
+            </ListItem>
+          </Link>
         </List>
         <Divider />
         {/* Projects */}
