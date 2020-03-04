@@ -19,6 +19,7 @@ import LoopIcon from "@material-ui/icons/Loop";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GetAllProjects from "../scrypts/getProjects";
+import { HashRouter, Route, Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -97,7 +98,7 @@ function Navigation(props) {
   };
 
   const handleRedirect = () => {
-    return null; //<Redirect to='/Nav'/>
+    return <Link to="/home" />; //<Redirect to='/Nav'/>
   };
 
   return (
