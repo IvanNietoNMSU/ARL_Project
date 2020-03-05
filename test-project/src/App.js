@@ -12,7 +12,7 @@ import DeleteProject from "./pages/deleteProject";
 function App() {
   return (
     <main>
-      <HashRouter>
+      <HashRouter forceRefresh={true}>
         <Navigation
           main={
             <Switch>

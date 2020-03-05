@@ -14,7 +14,10 @@ class GetAllProjects extends React.Component {
         {projects.map(p => {
           return (
             <Link
-              to={{ pathname: "/AllNotes", AllNotesProps: p }}
+              to={{
+                pathname: "/AllNotes",
+                AllNotesProps: p
+              }}
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <ListItem button key={p}>

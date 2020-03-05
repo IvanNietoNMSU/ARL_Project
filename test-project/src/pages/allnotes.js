@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Items from "../components/item";
 
 class AllNotes extends React.Component {
+  // eslint-disable-next-line
   constructor(props) {
     super(props);
   }
