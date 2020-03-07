@@ -8,17 +8,18 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControl from "@material-ui/core/FormControl";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Grid from "@material-ui/core/Grid";
+
 const useStyles = makeStyles(theme => ({
   root: {
     "& > *": {
       margin: theme.spacing(4),
-      align: "center",
       width: "100%"
     }
   },
   button: {
     margin: theme.spacing(4),
-    width: "100%"
+    width: "30%"
   }
 }));
 
@@ -27,42 +28,44 @@ function DeleteProject() {
 
   const projects = ["P1", "P2", "P3"];
   return (
-    <div
-      style={{
-        width: "30%"
-      }}
-    >
-      <Typography variant="h6" align="center">
-        Delete Project
-      </Typography>
+    <Grid container spacing={2}>
+      <Grid item xs={12} align="center">
+        <Typography variant="h5" align="center">
+          Delete Project
+        </Typography>
+      </Grid>
 
-      <FormControl component="fieldset" className={classes.formControl}>
-        {projects.map(p => {
-          return (
-            <FormControlLabel
-              control={
-                <Checkbox
-                  icon={<DeleteOutlinedIcon />}
-                  checkedIcon={<DeleteIcon />}
-                  value={p}
-                />
-              }
-              label={p}
-            />
-          );
-        })}
-      </FormControl>
+      <Grid item xs={12} align="center">
+        <FormControl component="fieldset" className={classes.formControl}>
+          {projects.map(p => {
+            return (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    icon={<DeleteOutlinedIcon />}
+                    checkedIcon={<DeleteIcon />}
+                    value={p}
+                  />
+                }
+                label={p}
+              />
+            );
+          })}
+        </FormControl>
+      </Grid>
 
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        className={classes.button}
-        startIcon={<SaveIcon />}
-      >
-        Save Changes
-      </Button>
-    </div>
+      <Grid item xs={12} align="center">
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          className={classes.button}
+          startIcon={<SaveIcon />}
+        >
+          Save Changes
+        </Button>
+      </Grid>
+    </Grid>
   );
 } //end DeleteProject
 

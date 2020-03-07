@@ -20,6 +20,7 @@ import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GetAllProjects from "../scrypts/getProjects";
 import { Link } from "react-router-dom";
+import Container from "@material-ui/core/Container";
 
 const drawerWidth = 240;
 
@@ -191,10 +192,12 @@ function Navigation(props) {
         {/* Projects */}
         <GetAllProjects />
       </Drawer>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {props.main}
-      </main>
+      <Container>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          {props.main}
+        </main>
+      </Container>
     </div>
   );
 }

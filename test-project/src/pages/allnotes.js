@@ -11,20 +11,19 @@ class AllNotes extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>
+      <Grid container xs={12} spacing={2}>
+        <Grid item xs={12} align="left">
           <u>
-            <Typography variant="h2">
+            <Typography variant="h5">
               {this.props.location.AllNotesProps} All Notes
             </Typography>
           </u>
-        </div>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            {<Items target="all" />}
-          </Grid>
         </Grid>
-      </div>
+
+        <Grid item xs={12}>
+          {<Items target="all" />}
+        </Grid>
+      </Grid>
     );
   }
 } //end AllNotes

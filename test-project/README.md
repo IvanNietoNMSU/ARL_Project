@@ -5,6 +5,8 @@ npm run electron-pack
 npm run electron-start
 Source: https://medium.com/@brockhoff/using-electron-with-react-the-basics-e93f9761f86f
 
+to update .exe run npm run electron-pack
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
