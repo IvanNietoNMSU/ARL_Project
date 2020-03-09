@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import Lottie from "react-lottie";
 import animationData from "../animations/15224-cute-doggie.json";
+
 function Home() {
   const defaultOptions = {
     loop: true,

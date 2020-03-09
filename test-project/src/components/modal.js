@@ -62,6 +62,7 @@ export default function SimpleModal() {
         Open Modal
       </button>
       <Modal
+        style={{ outline: "none" }}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         open={open}

@@ -5,11 +5,12 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Chip from "@material-ui/core/Chip";
+import Button from "@material-ui/core/Button";
 import NotesSharpIcon from "@material-ui/icons/NotesSharp";
 import NoteOutlinedIcon from "@material-ui/icons/NoteOutlined";
 import EditIcon from "@material-ui/icons/Edit";
 import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -142,25 +143,36 @@ function Items(props) {
                 <Typography>{item.status}</Typography>
               </div>
             </ExpansionPanelSummary>
-            <ExpansionPanelDetails justify="center">
-              <Paper
-                elevation={3}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexWrap: "wrap"
-                }}
-              >
-                <Chip
-                  label="Edit"
-                  onClick={() => {}}
-                  deleteIcon={<EditIcon />}
-                  variant="outlined"
-                />
-                <Typography style={{ padding: 20 }}>
-                  {item.description}
-                </Typography>
-              </Paper>
+            <ExpansionPanelDetails>
+              <Grid container xs={12}>
+                <Grid item xs={12}>
+                  <Paper
+                    elevation={3}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      flexWrap: "wrap"
+                    }}
+                  >
+                    <Grid item xs={12} align="right">
+                      <Button
+                        onClick={() => {}}
+                        startIcon={<EditIcon />}
+                        align="right"
+                        variant="outlined"
+                        color="primary"
+                      >
+                        Edit
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography style={{ padding: 20 }}>
+                        {item.description}
+                      </Typography>
+                    </Grid>
+                  </Paper>
+                </Grid>
+              </Grid>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         );
