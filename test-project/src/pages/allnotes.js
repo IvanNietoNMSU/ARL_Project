@@ -1,28 +1,31 @@
 import React from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import FolderIcon from "@material-ui/icons/Folder";
 import Items from "../components/item";
 
-function AllNotes(props) {
-  return (
-    <div>
-      <div>
-        <u>
-          <Typography variant="h2">All Notes</Typography>
-        </u>
-      </div>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+class AllNotes extends React.Component {
+  // eslint-disable-next-line
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Grid container xs={12} spacing={2}>
+        <Grid item xs={12} align="left">
+          <u>
+            <Typography variant="h5">
+              {this.props.location.AllNotesProps} All Notes
+            </Typography>
+          </u>
+        </Grid>
+
+        <Grid item xs={12}>
           {<Items target="all" />}
         </Grid>
       </Grid>
-    </div>
-  );
+    );
+  }
 } //end AllNotes
 
 export default AllNotes;
