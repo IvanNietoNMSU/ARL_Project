@@ -14,6 +14,7 @@ class GetAllProjects extends React.Component {
         {projects.map(p => {
           return (
             <Link
+              onClick={this.forceUpdate}
               to={{
                 pathname: "/AllNotes",
                 AllNotesProps: p

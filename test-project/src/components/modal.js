@@ -1,6 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
+import animationData from "../animations/16869-bagel-boy.json";
+import Lottie from "react-lottie";
+import { Typography, Container } from "@material-ui/core";
+import animationData2 from "../animations/28-loading.json";
+import animationData3 from "../animations/528-spinner-loading.json";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -28,6 +33,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData3,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice"
+  }
+};
+
 export default function SimpleModal() {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
@@ -53,13 +67,10 @@ export default function SimpleModal() {
         open={open}
         onClose={handleClose}
       >
-        <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">Text in a modal</h2>
-          <p id="simple-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-          <SimpleModal />
-        </div>
+        <Container align="center">
+          <Lottie options={defaultOptions} height={400} width={400} />
+          <Typography variant="h5">Loading ...</Typography>
+        </Container>
       </Modal>
     </div>
   );
