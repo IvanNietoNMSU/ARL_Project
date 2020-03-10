@@ -1,6 +1,9 @@
 const path = require("path");
+const model = require("../src/model.js");
 const { app, BrowserWindow } = require("electron");
 function createWindow() {
+  model.initDb(app.getPath("userData"));
+
   // Create the browser window.
   win = new BrowserWindow({ width: 1360, height: 800 });
 
