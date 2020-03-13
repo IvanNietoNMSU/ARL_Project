@@ -144,7 +144,7 @@ function Items(props) {
               </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <Grid container xs={12}>
+              <Grid container>
                 <Grid item xs={12}>
                   <Paper
                     elevation={3}

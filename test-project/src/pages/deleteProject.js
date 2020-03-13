@@ -45,9 +45,11 @@ function DeleteProject() {
                     icon={<DeleteOutlinedIcon />}
                     checkedIcon={<DeleteIcon />}
                     value={p}
+                    key={p}
                   />
                 }
                 label={p}
+                key={p}
               />
             );
           })}

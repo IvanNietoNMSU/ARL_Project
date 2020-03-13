@@ -11,7 +11,7 @@ class AllNotes extends React.Component {
 
   render() {
     return (
-      <Grid container xs={12} spacing={2}>
+      <Grid container spacing={2}>
         <Grid item xs={12} align="left">
           <u>
             <Typography variant="h5">

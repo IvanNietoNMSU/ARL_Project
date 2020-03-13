@@ -14,6 +14,7 @@ class GetAllProjects extends React.Component {
         {projects.map(p => {
           return (
             <Link
+              key={p}
               to={{
                 pathname: "/AllNotes",
                 AllNotesProps: p
