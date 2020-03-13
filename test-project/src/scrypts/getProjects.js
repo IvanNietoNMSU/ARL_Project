@@ -20,11 +20,9 @@ class GetAllProjects extends React.Component {
   callApi() {
     let that = this;
     console.log("Clicked!\n");
-    axios
-      .get("http://localhost:3001?do=getallprojects&name=test2")
-      .then(response => {
-        that.setState({ projects: response.data });
-      });
+    axios.get("http://localhost:3001/getallprojects?").then(response => {
+      that.setState({ projects: response.data });
+    });
     this.setState({ flag: false });
   }
 

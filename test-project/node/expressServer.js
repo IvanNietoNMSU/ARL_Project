@@ -15,24 +15,28 @@ module.exports.server = server;
 async function server() {
   app.use(cors());
 
-  app.get("/", async (req, res) => {
-    if (req.query.do === "initialize") {
-      initialize();
-      res.send(request.concat("Request for ", req.query.do, " complete"));
-    } else if (req.query.do === "createproject") {
-      createProject(req.query.name.replace(/ /g, "_"));
-      res.send(request.concat("Request for ", req.query.do, " complete"));
-    } else if (req.query.do === "getallprojects") {
-      let response = await allProjects();
-      res.send(response);
-    } else {
-      //let path = createDatabase("./project1.db");
-    }
-    let request = "";
-    //res.send(request.concat("Request for ", req.query.do, " complete"));
+  // Creates root database for keeping track of
+  // declared projects and usernames
+  app.put("/initialize", async (req, res) => {
+    initialize();
+    res.end("Root repository initialized");
   });
-  //database, table, data, colums
-  app.put("/", async (req, res) => {
+
+  // Creates a new project (database) with the specified name
+  app.put("/createproject", async (req, res) => {
+    createProject(req.query.name.replace(/ /g, "_"));
+    res.end("Project " + req.query.name + " Created");
+  });
+
+  // Returns all projects declared by user as stated in projects table of root database
+  app.get("/getallprojects", async (req, res) => {
+    let response = await allProjects();
+    res.send(response);
+  });
+
+  // NOT WORKING:/
+  // Adds a finding to the specified project (database)
+  app.put("/addfinding", async (req, res) => {
     if (req.query.do === "addfinding") {
       let data = [
         0,
@@ -55,5 +59,6 @@ async function server() {
     }
   });
 
+  initialize();
   app.listen(3001, () => console.log("App listening on port 3001!"));
 }

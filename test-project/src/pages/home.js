@@ -3,7 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import Lottie from "react-lottie";
 import animationData from "../animations/15224-cute-doggie.json";
-import axios from "axios";
 
 function Home() {
   const defaultOptions = {
@@ -14,10 +13,6 @@ function Home() {
       preserveAspectRatio: "xMidYMid slice"
     }
   };
-
-  axios.get("http://localhost:3001?do=initialize").then(response => {
-    console.log(response);
-  });
 
   return (
     <Grid container align="center">

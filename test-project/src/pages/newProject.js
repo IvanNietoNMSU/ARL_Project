@@ -29,7 +29,7 @@ function NewProject() {
   const handleClick = () => {
     console.log("Clicked!\n");
     axios
-      .get("http://localhost:3001?do=createproject&name=" + title)
+      .put("http://localhost:3001/createproject?do=createproject&name=" + title)
       .then(response => {
         console.log(response);
       });
