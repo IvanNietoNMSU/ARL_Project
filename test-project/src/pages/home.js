@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import Lottie from "react-lottie";
 import animationData from "../animations/15224-cute-doggie.json";
+import axios from "axios";
 
 function Home() {
   const defaultOptions = {
@@ -14,8 +15,12 @@ function Home() {
     }
   };
 
+  axios.get("http://localhost:3001?do=initialize").then(response => {
+    console.log(response);
+  });
+
   return (
-    <Grid container xs={12} align="center">
+    <Grid container align="center">
       <Grid item xs={12}>
         <Typography variant="h5">Welcome Home!</Typography>
       </Grid>

@@ -8,6 +8,7 @@ import Home from "./pages/home";
 import SyncNotes from "./pages/syncNotes";
 import NewProject from "./pages/newProject";
 import DeleteProject from "./pages/deleteProject";
+import AddFinding from "./pages/addFinding";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/DeleteProject" component={DeleteProject} />
               <Route path="/NewProject" component={NewProject} />
               <Route path="/AllNotes" component={AllNotes} />
+              <Route path="/AddFinding" component={AddFinding} />
             </Switch>
           }
         />

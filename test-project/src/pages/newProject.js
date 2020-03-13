@@ -27,7 +27,6 @@ function NewProject() {
   const classes = useStyles();
 
   const handleClick = () => {
-    let that = this;
     console.log("Clicked!\n");
     axios
       .get("http://localhost:3001?do=createproject&name=" + title)

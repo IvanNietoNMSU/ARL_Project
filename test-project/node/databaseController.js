@@ -4,7 +4,7 @@ const sqlite3 = require("sqlite3").verbose();
 module.exports = {
   createDatabase: async path => {
     let db = new sqlite3.Database(
-      path,
+      "./" + path + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
       err => {
         if (err) console.log(err);
@@ -17,7 +17,7 @@ module.exports = {
 
   createTable: async (database, table, columns) => {
     let db = new sqlite3.Database(
-      database,
+      "./" + database + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
       err => {
         if (err) console.log(err);
@@ -32,7 +32,7 @@ module.exports = {
 
   insertQuery: async (database, table, data, colums) => {
     let db = new sqlite3.Database(
-      database,
+      "./" + database + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
       err => {
         if (err) console.log(err);
@@ -40,13 +40,14 @@ module.exports = {
       }
     );
 
-    let placeholders = data.map(data => "(?)").join(",");
-    let sql =
-      "INSERT INTO " + table + "(" + colums + ") VALUES " + placeholders;
-
-    db.run(sql, data, function(err) {
-      if (err) console.log(err);
-      console.log("Successfully inserted users");
+    //let placeholders = data.map(datas => "(?)").join(",");
+    let sql = "INSERT INTO " + table + "VALUES ( " + data + ")";
+    let promise = await new Promise((resolve, reject) => {
+      db.run(sql, [], function(err) {
+        if (err) console.log(err);
+        console.log("Successfully inserted into " + database);
+        resolve();
+      });
     });
     db.close();
     return null;
