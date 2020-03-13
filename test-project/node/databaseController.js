@@ -149,5 +149,7 @@ module.exports = {
     db.close();
 
     return results;
-  }
+  },
+
+  deleteProject: async () => {}
 };
