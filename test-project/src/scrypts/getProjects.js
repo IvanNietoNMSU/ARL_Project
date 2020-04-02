@@ -39,11 +39,12 @@ class GetAllProjects extends React.Component {
                 pathname: "/AllNotes",
                 AllNotesProps: p
               }}
-              style={{ textDecoration: "none", color: "inherit" }}
+              style={{ textDecoration: "none", color: "white" }}
+              replace
             >
               <ListItem button key={p}>
                 <ListItemIcon>
-                  <LabelImportantIcon />
+                  <LabelImportantIcon style={{ color: "#ca3e47" }} />
                 </ListItemIcon>
                 <ListItemText primary={p} />
               </ListItem>

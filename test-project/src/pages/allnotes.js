@@ -15,11 +15,9 @@ class AllNotes extends React.Component {
     return (
       <Grid container spacing={2}>
         <Grid item xs={6} align="left">
-          <u>
-            <Typography variant="h5">
-              {this.props.location.AllNotesProps} All Notes
-            </Typography>
-          </u>
+          <Typography variant="h5">
+            {this.props.location.AllNotesProps} / All Notes
+          </Typography>
         </Grid>
 
         <Grid item xs={6} align="right">
@@ -32,26 +30,34 @@ class AllNotes extends React.Component {
                 }}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <Button variant="contained" color="primary" size="small">
+                <Button variant="outlined" color="black" size="small">
                   Add Finding
                 </Button>
               </Link>
             </Grid>
             <Grid item xs={6}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={this.handleClickFinding}
+              <Link
+                to={{
+                  pathname: "/AddTask",
+                  AddFindingProps: this.props.location.AllNotesProps
+                }}
+                style={{ textDecoration: "none", color: "inherit" }}
               >
-                Add Task
-              </Button>
+                <Button
+                  variant="outlined"
+                  color="black"
+                  size="small"
+                  onClick={this.handleClickFinding}
+                >
+                  Add Task
+                </Button>
+              </Link>
             </Grid>
           </Grid>
         </Grid>
 
         <Grid item xs={12}>
-          {<Items target="all" />}
+          <Items target="all" name={this.props.location.AllNotesProps} />
         </Grid>
       </Grid>
     );

@@ -1,29 +1,42 @@
 import React from "react";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
+import { Link } from "react-router-dom";
+
+import {
+  AppBar,
+  CssBaseline,
+  Divider,
+  Container,
+  Drawer,
+  Grid,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  List,
+  makeStyles,
+  Toolbar,
+  Typography,
+  useTheme
+} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import LoopIcon from "@material-ui/icons/Loop";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+
 import GetAllProjects from "../scrypts/getProjects";
-import { Link } from "react-router-dom";
-import Container from "@material-ui/core/Container";
+import banner from "../img/banner.jpg";
+import logo from "../img/logo.jpg";
 
 const drawerWidth = 240;
-
+/**
+ * https://colorhunt.co/palette/149559
+ *
+ * Light color: 525252
+ *
+ */
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
@@ -56,12 +69,14 @@ const useStyles = makeStyles(theme => ({
   },
   drawerOpen: {
     width: drawerWidth,
+    background: "#414141",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
     })
   },
   drawerClose: {
+    background: "#414141",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -82,6 +97,12 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3)
+  },
+  img: {
+    backgroundColor: "black",
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "right"
   }
 }));
 
@@ -103,6 +124,13 @@ function Navigation(props) {
       <CssBaseline />
       <AppBar
         position="fixed"
+        style={{
+          backgroundColor: "black",
+          backgroundImage: "url(" + banner + ")",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right"
+        }}
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
         })}
@@ -120,9 +148,9 @@ function Navigation(props) {
             <MenuIcon />
           </IconButton>
           <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <Typography variant="h6" noWrap>
-              DAC Project
-            </Typography>
+            <Grid item xs={12}>
+              <img height="55" src={require("../img/logo.jpg")} />
+            </Grid>
           </Link>
         </Toolbar>
       </AppBar>
@@ -142,9 +170,9 @@ function Navigation(props) {
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
+              <ChevronRightIcon style={{ color: "#ca3e47" }} />
             ) : (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon style={{ color: "#ca3e47" }} />
             )}
           </IconButton>
         </div>
@@ -153,11 +181,11 @@ function Navigation(props) {
           {/* Sync Notes Button */}
           <Link
             to="/SyncNotes"
-            style={{ textDecoration: "none", color: "inherit" }}
+            style={{ textDecoration: "none", color: "white" }}
           >
             <ListItem button key="Sync">
               <ListItemIcon>
-                <LoopIcon />
+                <LoopIcon style={{ color: "#ca3e47" }} />
               </ListItemIcon>
               <ListItemText primary="syncNotes" />
             </ListItem>
@@ -166,11 +194,11 @@ function Navigation(props) {
           {/* New Project Button */}
           <Link
             to="/NewProject"
-            style={{ textDecoration: "none", color: "inherit" }}
+            style={{ textDecoration: "none", color: "white" }}
           >
             <ListItem button key="newProject">
               <ListItemIcon>
-                <AddIcon />
+                <AddIcon style={{ color: "#ca3e47" }} />
               </ListItemIcon>
               <ListItemText primary="New Project" />
             </ListItem>
@@ -178,11 +206,11 @@ function Navigation(props) {
 
           <Link
             to="/DeleteProject"
-            style={{ textDecoration: "none", color: "inherit" }}
+            style={{ textDecoration: "none", color: "white" }}
           >
             <ListItem button key="deleteProject">
               <ListItemIcon>
-                <DeleteIcon />
+                <DeleteIcon style={{ color: "#ca3e47" }} />
               </ListItemIcon>
               <ListItemText primary="Delete Project" />
             </ListItem>

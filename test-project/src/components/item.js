@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -57,40 +58,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Items(props) {
+const Items = props => {
   const classes = useStyles();
-  let items = [];
+  const NoItems = [
+    {
+      type: "task",
+      title:
+        "Nothing found. Click 'Add Task' or 'Add Finding' to add something.",
+      assignedTo: "",
+      status: "",
+      description: "None"
+    }
+  ];
+  const [items, setItems] = useState(undefined); // fetchItems(props.name)
+  const [flag, setFlag] = useState(false);
 
-  //Get all tasks for this project
-  if (props.target === "all") {
-    items = [
-      {
-        type: "task",
-        title: "This is the title of the first task!",
-        assignedTo: "Austin",
-        status: "In Progress",
-        description:
-          "I've never done drugs, and though I've tasted alcohol, I've never had a whole drink. I don't even drink coffee. I had a small cup once--it was like drinking battery acid. I had to poop all morning. I once had a sniff of Scotch. I thought, I should be cleaning my sink with this stuff. But then the fire nation attacked."
-      },
-      {
-        type: "finding",
-        title: "This is the title of the finding!",
-        assignedTo: "Aaron",
-        status: "Complete",
-        description:
-          "We're like dogs on an acropolis. Trotting around with inexhaustible bladders and only too anxious to lift a leg against every statue. And mostly we succeed, Art, religion, heroism, love--we've left our visiting card on all of them. But death--death remains out of reach. We haven't been able to defile that statue. Not yet, at any rate, but progress is still progressing."
-      },
-      {
-        type: "task",
-        title: "This is the title of the first task!",
-        assignedTo: "Ivan",
-        status: "In Progress",
-        description:
-          '"So you think that money is the root of all evil?" said Francisco d\'Anconia. "Have you ever asked what is the root of money? Money is a tool of exchange, which can\'t exist unless there are goods produced and men able to produce them. Money is the material shape of the principle that men who wish to deal with one another must deal by trade and give value for value. Money is not the tool of the moochers, who claim your product by tears, or of the looters, who take it from you by force. Money is made possible only by the men who produce. Is this what you consider evil?'
-      }
-    ];
+  if (!flag) {
+    axios
+      .get("http://localhost:3001/getentries?name=" + props.name)
+      .then(response => {
+        console.log(response.data);
+        setItems(response.data);
+      });
+    setFlag(!flag);
   }
-
   return (
     <div>
       <ExpansionPanel disabled>
@@ -112,73 +103,74 @@ function Items(props) {
           <div className={classes.columnicon}></div>
         </ExpansionPanelSummary>
       </ExpansionPanel>
+      {!!Array.isArray(items) &&
+        items.map(item => {
+          return (
+            <ExpansionPanel>
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-label="Expand"
+                aria-controls="additional-actions1-content"
+                id="additional-actions1-header"
+              >
+                <div className={classes.columnicon}>
+                  {(() => {
+                    if (item.type === "task") return <NoteOutlinedIcon />;
+                    else return <NotesSharpIcon />;
+                  })()}
+                </div>
 
-      {items.map(item => {
-        return (
-          <ExpansionPanel>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-label="Expand"
-              aria-controls="additional-actions1-content"
-              id="additional-actions1-header"
-            >
-              <div className={classes.columnicon}>
-                {(() => {
-                  if (item.type === "task") return <NoteOutlinedIcon />;
-                  else return <NotesSharpIcon />;
-                })()}
-              </div>
+                <div className={classes.columnmain}>
+                  <Typography className={classes.secondaryHeading}>
+                    {item.title}
+                  </Typography>
+                </div>
 
-              <div className={classes.columnmain}>
-                <Typography className={classes.secondaryHeading}>
-                  {item.title}
-                </Typography>
-              </div>
+                <div className={classes.column}>
+                  <Typography>{item.assignedTo}</Typography>
+                </div>
 
-              <div className={classes.column}>
-                <Typography>{item.assignedTo}</Typography>
-              </div>
-
-              <div className={classes.column}>
-                <Typography>{item.status}</Typography>
-              </div>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Grid container>
-                <Grid item xs={12}>
-                  <Paper
-                    elevation={3}
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      flexWrap: "wrap"
-                    }}
-                  >
-                    <Grid item xs={12} align="right">
-                      <Button
-                        onClick={() => {}}
-                        startIcon={<EditIcon />}
-                        align="right"
-                        variant="outlined"
-                        color="primary"
-                      >
-                        Edit
-                      </Button>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography style={{ padding: 20 }}>
-                        {item.description}
-                      </Typography>
-                    </Grid>
-                  </Paper>
+                <div className={classes.column}>
+                  <Typography>{item.status}</Typography>
+                </div>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Paper
+                      elevation={3}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexWrap: "wrap"
+                      }}
+                    >
+                      <Grid item xs={12} align="right">
+                        <Button
+                          onClick={() => {}}
+                          startIcon={<EditIcon />}
+                          align="right"
+                          variant="outlined"
+                          color="default"
+                          size="small"
+                        >
+                          Edit
+                        </Button>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography style={{ padding: 20 }}>
+                          {item.description}
+                        </Typography>
+                      </Grid>
+                    </Paper>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        );
-      })}
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          );
+        })}
     </div>
   );
-} //end Item
+}; //end Item
 
 export default Items;

@@ -29,7 +29,7 @@ function AddFinding(props) {
   const handleClick = () => {
     axios
       .put(
-        "http://localhost:3001?do=addfinding&projectname=" +
+        "http://localhost:3001/addfinding?projectname=" +
           props.location.AddFindingProps +
           "&name=" +
           title +
@@ -44,11 +44,9 @@ function AddFinding(props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} align="left">
-        <u>
-          <Typography variant="h5">
-            {props.location.AddFindingProps} Add Finding
-          </Typography>
-        </u>
+        <Typography variant="h5">
+          {props.location.AddFindingProps} Add Finding
+        </Typography>
       </Grid>
 
       <Grid item xs={12} align="center">

@@ -23,9 +23,13 @@ async function server() {
   });
 
   // Creates a new project (database) with the specified name
+  // return error if project already exists
   app.put("/createproject", async (req, res) => {
-    createProject(req.query.name.replace(/ /g, "_"));
-    res.end("Project " + req.query.name + " Created");
+    if (req.query.name === "undefined") res.end("Database name is required");
+    else {
+      createProject(req.query.name.replace(/ /g, "_"));
+      res.end("Project " + req.query.name + " Created");
+    }
   });
 
   // Returns all projects declared by user as stated in projects table of root database
@@ -34,28 +38,53 @@ async function server() {
     res.send(response);
   });
 
-  // NOT WORKING:/
+  app.get("/getentries", async (req, res) => {
+    if (req.query.name === "undefined") res.send("Database name is required");
+    else {
+      let response = await queryTable(
+        req.query.name,
+        "SELECT * FROM findings"
+      ).catch();
+      const response2 = await queryTable(
+        req.query.name,
+        "SELECT * FROM tasks"
+      ).catch();
+      response = response.concat(response2);
+      res.send(response);
+    }
+  });
+
   // Adds a finding to the specified project (database)
   app.put("/addfinding", async (req, res) => {
-    if (req.query.do === "addfinding") {
-      let data = [
-        0,
-        "finding",
-        req.query.name,
-        "none",
-        "In_Progress",
-        req.query.desc
-      ];
-      data =
-        "0, finding," + req.query.name + ",none,In_Progress," + req.query.desc;
-      let columns =
-        " taskId , type , title, assignedTo , status, description text";
-      let response = await insertQuery(
-        req.query.projectname,
-        "findings",
-        data,
-        columns
-      );
+    if (req.query.name === "undefined") res.send("Database name is required");
+    else {
+      let data =
+        '0,"finding", "' +
+        req.query.name +
+        '", "none", "To Do", "' +
+        req.query.desc +
+        '" ';
+      let columns = " taskId , type , title, assignedTo , status, description ";
+      let sql = "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
+
+      let response = await insertQuery(req.query.projectname, sql);
+      res.send(response);
+    }
+  });
+
+  app.put("/addtask", async (req, res) => {
+    if (req.query.name === "undefined") res.send("Database name is required");
+    else {
+      const columns = "type, title, assignedTo, status, description ";
+      const data =
+        '"finding", "' +
+        req.query.name +
+        '", "none", "To Do", "' +
+        req.query.desc +
+        '" ';
+      const sql = "INSERT INTO tasks (" + columns + ") VALUES ( " + data + ")";
+      const response = await insertQuery(req.query.projectname, sql);
+      res.send(response);
     }
   });
 

@@ -11,7 +11,7 @@ module.exports = {
         console.log("Database created successfully!");
       }
     );
-    db.close();
+    await db.close();
     return path;
   },
 
@@ -26,22 +26,20 @@ module.exports = {
     );
 
     db.run("CREATE TABLE IF NOT EXISTS " + table + " (" + columns + ")");
-    db.close();
+    await db.close();
     console.log("Table " + table + " created successfully");
   },
 
-  insertQuery: async (database, table, data, colums) => {
+  insertQuery: async (database, sql) => {
     let db = new sqlite3.Database(
       "./" + database + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
       err => {
         if (err) console.log(err);
-        else console.log("Success!");
+        else console.log('Connected to ', database)
       }
     );
 
-    //let placeholders = data.map(datas => "(?)").join(",");
-    let sql = "INSERT INTO " + table + "VALUES ( " + data + ")";
     let promise = await new Promise((resolve, reject) => {
       db.run(sql, [], function(err) {
         if (err) console.log(err);
@@ -49,13 +47,13 @@ module.exports = {
         resolve();
       });
     });
-    db.close();
+    await db.close();
     return null;
   },
 
   queryTable: async (database, sql) => {
     let db = new sqlite3.Database(
-      database,
+      './'+ database + '.db',
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
       err => {
         if (err) console.log(err);
@@ -63,15 +61,20 @@ module.exports = {
       }
     );
 
-    let result;
-
-    db.all(sql, (err, row) => {
-      if (err) console.log(err);
-      else result = row;
+    let results = [];
+    let promise = await new Promise((resolve, reject) => {
+      db.all(sql, [], (err, rows) => {
+        if (err) {
+          console.log(err)
+          reject();
+          return err;
+        }
+        results = rows;
+        resolve();
+      });
     });
-
-    db.close();
-    return result;
+    await db.close();
+    return results;
   },
 
   initialize: async () => {
@@ -88,7 +91,7 @@ module.exports = {
     db.run("CREATE TABLE IF NOT EXISTS projects (projectName text)");
     db.run("CREATE TABLE IF NOT EXISTS users (userName text)");
 
-    db.close();
+    await db.close();
   },
 
   createProject: async projectName => {
@@ -104,13 +107,17 @@ module.exports = {
     );
 
     db.run(
-      "CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, type text, title text, assignedTo text, status text, description text )"
-    );
+      "CREATE TABLE IF NOT EXISTS tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, type text, title text, assignedTo text, status text, description text )", [], function(err) {
+        if (err) console.log('ERROR:', err);
+        console.log("Successfully inserted task table into " + projectName);
+      });
     db.run(
-      "CREATE TABLE IF NOT EXISTS findings (id INTEGER PRIMARY KEY AUTOINCREMENT, taskId INTEGER, type text, title text, assignedTo text, status text, description text)"
-    );
-
-    db.close();
+      "CREATE TABLE IF NOT EXISTS findings(id INTEGER PRIMARY KEY AUTOINCREMENT, taskId INTEGER, type text, title text, assignedTo text, status text, description text)", [], function(err) {
+        if (err) console.log('ERROR:',err);
+        console.log("Successfully inserted findings table into " + projectName);
+      });
+      
+    await db.close();
 
     db = new sqlite3.Database("./root.db");
 
@@ -121,7 +128,7 @@ module.exports = {
       console.log("Successfully inserted");
     });
 
-    db.close;
+    await db.close;
   },
 
   allProjects: async () => {
@@ -146,8 +153,7 @@ module.exports = {
       });
     });
 
-    db.close();
-
+    await db.close();
     return results;
   },
 
