@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -24,20 +25,48 @@ const useStyles = makeStyles(theme => ({
 function NewProject() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+  const [alert, setAlert] = useState(false);
+  const [error, setError] = useState(false);
   const classes = useStyles();
 
   const handleClick = () => {
-    console.log("Clicked!\n");
     axios
-      .put("http://localhost:3001/createproject?do=createproject&name=" + title)
+      .put(
+        "http://localhost:3001/createproject?do=createproject&name=" +
+          title +
+          "&description=" +
+          desc
+      )
       .then(response => {
-        console.log(response);
+        setAlert(true);
+        if (response.status !== 200) setError(true);
       });
   };
 
   return (
     <Fragment>
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          {alert && (
+            <Alert
+              severity={error ? "error" : "success"}
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    console.log("Clicked Closed!");
+                    setAlert(false);
+                  }}
+                >
+                  CLOSE
+                </Button>
+              }
+            >
+              {error ? "Creation failed" : "Successfully Created Project!"}
+            </Alert>
+          )}
+        </Grid>
         <Grid item xs={12}>
           <Typography variant="h5" align="center">
             Create New Project

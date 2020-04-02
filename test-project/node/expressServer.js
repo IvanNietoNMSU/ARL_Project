@@ -8,7 +8,8 @@ const {
   insertQuery,
   initialize,
   createProject,
-  allProjects
+  allProjects,
+  deleteProject
 } = require("./databaseController"); //require(path.join(__dirname, "./databaseController"));
 
 module.exports.server = server;
@@ -27,7 +28,7 @@ async function server() {
   app.put("/createproject", async (req, res) => {
     if (req.query.name === "undefined") res.end("Database name is required");
     else {
-      createProject(req.query.name.replace(/ /g, "_"));
+      createProject(req.query.name, req.query.description);
       res.end("Project " + req.query.name + " Created");
     }
   });
@@ -77,13 +78,22 @@ async function server() {
     else {
       const columns = "type, title, assignedTo, status, description ";
       const data =
-        '"finding", "' +
+        '"task", "' +
         req.query.name +
         '", "none", "To Do", "' +
         req.query.desc +
         '" ';
       const sql = "INSERT INTO tasks (" + columns + ") VALUES ( " + data + ")";
       const response = await insertQuery(req.query.projectname, sql);
+      res.send(response);
+    }
+  });
+
+  app.put("/deleteprojects", async (req, res) => {
+    if (req.query.name === "undefined")
+      res.send("Empty list of projects to delete");
+    else {
+      const response = await deleteProject(req.query.projects.split(","));
       res.send(response);
     }
   });

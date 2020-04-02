@@ -16,13 +16,19 @@ class AllNotes extends React.Component {
       <Grid container spacing={2}>
         <Grid item xs={6} align="left">
           <Typography variant="h5">
-            {this.props.location.AllNotesProps} / All Notes
+            {this.props.location.AllNotesProps}
           </Typography>
         </Grid>
-
-        <Grid item xs={6} align="right">
+        {this.props.location.des && (
+          <Grid item xs={12}>
+            <Typography variant="subtitle2" color="textSecondary">
+              {this.props.location.des}
+            </Typography>
+          </Grid>
+        )}
+        <Grid item xs={12}>
           <Grid container item xs={12}>
-            <Grid item xs={6}>
+            <Grid item xs={12} align="right">
               <Link
                 to={{
                   pathname: "/AddFinding",
@@ -30,12 +36,10 @@ class AllNotes extends React.Component {
                 }}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <Button variant="outlined" color="black" size="small">
+                <Button variant="outlined" size="small">
                   Add Finding
                 </Button>
               </Link>
-            </Grid>
-            <Grid item xs={6}>
               <Link
                 to={{
                   pathname: "/AddTask",
@@ -45,7 +49,6 @@ class AllNotes extends React.Component {
               >
                 <Button
                   variant="outlined"
-                  color="black"
                   size="small"
                   onClick={this.handleClickFinding}
                 >

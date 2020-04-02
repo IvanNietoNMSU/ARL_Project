@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -60,117 +61,120 @@ const useStyles = makeStyles(theme => ({
 
 const Items = props => {
   const classes = useStyles();
-  const NoItems = [
-    {
-      type: "task",
-      title:
-        "Nothing found. Click 'Add Task' or 'Add Finding' to add something.",
-      assignedTo: "",
-      status: "",
-      description: "None"
-    }
-  ];
-  const [items, setItems] = useState(undefined); // fetchItems(props.name)
+  const [items, setItems] = useState(undefined);
+  const [project, setProject] = useState(props.name);
   const [flag, setFlag] = useState(false);
+  const history = useHistory();
 
-  if (!flag) {
+  if (project !== props.name) {
+    setProject(props.name);
+    setFlag(false);
+  }
+
+  if (!flag && props.name !== undefined) {
     axios
       .get("http://localhost:3001/getentries?name=" + props.name)
       .then(response => {
-        console.log(response.data);
         setItems(response.data);
       });
     setFlag(!flag);
   }
-  return (
-    <div>
-      <ExpansionPanel disabled>
-        <ExpansionPanelSummary
-          aria-label="Expand"
-          aria-controls="additional-actions1-content"
-          id="additional-actions1-header"
-        >
-          <div className={classes.columnicon}></div>
-          <div className={classes.columnmain}>
-            <Typography variant="h5">Title</Typography>
-          </div>
-          <div className={classes.column}>
-            <Typography variant="h5">Assigné</Typography>
-          </div>
-          <div className={classes.column}>
-            <Typography variant="h5">Status</Typography>
-          </div>
-          <div className={classes.columnicon}></div>
-        </ExpansionPanelSummary>
-      </ExpansionPanel>
-      {!!Array.isArray(items) &&
-        items.map(item => {
-          return (
-            <ExpansionPanel>
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-label="Expand"
-                aria-controls="additional-actions1-content"
-                id="additional-actions1-header"
-              >
-                <div className={classes.columnicon}>
-                  {(() => {
-                    if (item.type === "task") return <NoteOutlinedIcon />;
-                    else return <NotesSharpIcon />;
-                  })()}
-                </div>
+  if (props.name !== undefined)
+    return (
+      <div>
+        <ExpansionPanel disabled>
+          <ExpansionPanelSummary
+            aria-label="Expand"
+            aria-controls="additional-actions1-content"
+            id="additional-actions1-header"
+          >
+            <div className={classes.columnicon}></div>
+            <div className={classes.columnmain}>
+              <Typography variant="h5">Title</Typography>
+            </div>
+            <div className={classes.column}>
+              <Typography variant="h5">Assigné</Typography>
+            </div>
+            <div className={classes.column}>
+              <Typography variant="h5">Status</Typography>
+            </div>
+            <div className={classes.columnicon}></div>
+          </ExpansionPanelSummary>
+        </ExpansionPanel>
+        {!!Array.isArray(items) &&
+          items.map(item => {
+            return (
+              <ExpansionPanel>
+                <ExpansionPanelSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-label="Expand"
+                  aria-controls="additional-actions1-content"
+                  id="additional-actions1-header"
+                >
+                  <div className={classes.columnicon}>
+                    {(() => {
+                      if (item.type === "task") return <NoteOutlinedIcon />;
+                      else return <NotesSharpIcon />;
+                    })()}
+                  </div>
 
-                <div className={classes.columnmain}>
-                  <Typography className={classes.secondaryHeading}>
-                    {item.title}
-                  </Typography>
-                </div>
+                  <div className={classes.columnmain}>
+                    <Typography className={classes.secondaryHeading}>
+                      {`${item.id}${
+                        item.taskId !== undefined ? "-" + item.taskId : ""
+                      }/ ${item.title}`}
+                    </Typography>
+                  </div>
 
-                <div className={classes.column}>
-                  <Typography>{item.assignedTo}</Typography>
-                </div>
+                  <div className={classes.column}>
+                    <Typography>{item.assignedTo}</Typography>
+                  </div>
 
-                <div className={classes.column}>
-                  <Typography>{item.status}</Typography>
-                </div>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Grid container>
-                  <Grid item xs={12}>
-                    <Paper
-                      elevation={3}
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        flexWrap: "wrap"
-                      }}
-                    >
-                      <Grid item xs={12} align="right">
-                        <Button
-                          onClick={() => {}}
-                          startIcon={<EditIcon />}
-                          align="right"
-                          variant="outlined"
-                          color="default"
-                          size="small"
-                        >
-                          Edit
-                        </Button>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography style={{ padding: 20 }}>
-                          {item.description}
-                        </Typography>
-                      </Grid>
-                    </Paper>
+                  <div className={classes.column}>
+                    <Typography>{item.status}</Typography>
+                  </div>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <Paper
+                        elevation={3}
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          flexWrap: "wrap"
+                        }}
+                      >
+                        <Grid item xs={12} align="right">
+                          <Button
+                            onClick={() => {}}
+                            startIcon={<EditIcon />}
+                            align="right"
+                            variant="outlined"
+                            color="default"
+                            size="small"
+                          >
+                            Edit
+                          </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Typography style={{ padding: 20 }}>
+                            {item.description}
+                          </Typography>
+                        </Grid>
+                      </Paper>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          );
-        })}
-    </div>
-  );
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            );
+          })}
+      </div>
+    );
+  else {
+    history.push("/");
+    return null;
+  }
 }; //end Item
 
 export default Items;

@@ -16,7 +16,6 @@ import {
   List,
   makeStyles,
   Toolbar,
-  Typography,
   useTheme
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -28,7 +27,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import GetAllProjects from "../scrypts/getProjects";
 import banner from "../img/banner.jpg";
-import logo from "../img/logo.jpg";
 
 const drawerWidth = 240;
 /**
@@ -149,7 +147,7 @@ function Navigation(props) {
           </IconButton>
           <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
             <Grid item xs={12}>
-              <img height="55" src={require("../img/logo.jpg")} />
+              <img alt="logo" height="55" src={require("../img/logo.jpg")} />
             </Grid>
           </Link>
         </Toolbar>
