@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import Lottie from "react-lottie";
 import animationData from "../animations/15224-cute-doggie.json";
+
 function Home() {
   const defaultOptions = {
     loop: true,
@@ -14,7 +15,7 @@ function Home() {
   };
 
   return (
-    <Grid container xs={12} align="center">
+    <Grid container align="center">
       <Grid item xs={12}>
         <Typography variant="h5">Welcome Home!</Typography>
       </Grid>

@@ -8,6 +8,8 @@ import Home from "./pages/home";
 import SyncNotes from "./pages/syncNotes";
 import NewProject from "./pages/newProject";
 import DeleteProject from "./pages/deleteProject";
+import AddFinding from "./pages/addFinding";
+import AddTask from "./pages/addTask";
 
 function App() {
   return (
@@ -16,12 +18,14 @@ function App() {
         <Navigation
           main={
             <Switch>
-              <Route path="/" extract component={Home} exact />
-              <Route path="/Nav" component={TextEdit} />
-              <Route path="/SyncNotes" component={SyncNotes} />
-              <Route path="/DeleteProject" component={DeleteProject} />
-              <Route path="/NewProject" component={NewProject} />
-              <Route path="/AllNotes" component={AllNotes} />
+              <Route exact path="/" extract component={Home} />
+              <Route exact path="/Nav" component={TextEdit} />
+              <Route exact path="/SyncNotes" component={SyncNotes} />
+              <Route exact path="/DeleteProject" component={DeleteProject} />
+              <Route exact path="/NewProject" component={NewProject} />
+              <Route exact path="/AllNotes" component={AllNotes} />
+              <Route exact path="/AddFinding" component={AddFinding} />
+              <Route exact path="/AddTask" component={AddTask} />
             </Switch>
           }
         />

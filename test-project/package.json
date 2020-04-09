@@ -13,11 +13,17 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "aws-sdk": "^2.637.0",
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "node-pre-gyp": "^0.14.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-lottie": "^1.2.3",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "sqlite3": "^4.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -26,7 +32,8 @@
     "eject": "react-scripts eject",
     "electron-start": "electron .",
     "preelectron-pack": "npm run build",
-    "electron-pack": "electron-builder -c.extraMetadata.main=build/Main.js"
+    "electron-pack": "electron-builder -c.extraMetadata.main=build/Main.js",
+    "dev": "run-p server start"
   },
   "eslintConfig": {
     "extends": "react-app"
