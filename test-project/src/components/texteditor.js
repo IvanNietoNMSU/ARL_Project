@@ -9,23 +9,22 @@ class TextEdit extends React.Component {
   render() {
     return (
       <div className="testedit">
-        <h1>New Finding</h1>
         <CKEditor
           editor={ClassicEditor}
           data="<p></p>"
-          onInit={editor => {
+          onInit={(editor) => {
             // You can store the "editor" and use when it is needed.
             console.log("Editor is ready to use!", editor);
           }}
           onChange={(event, editor) => {
             const data = editor.getData();
-            console.log({ event, editor, data });
+            console.log(data);
           }}
           onBlur={(event, editor) => {
-            console.log("Blur.", editor);
+            console.log("Blur");
           }}
           onFocus={(event, editor) => {
-            console.log("Focus.", editor);
+            console.log("Focus");
           }}
         />
       </div>

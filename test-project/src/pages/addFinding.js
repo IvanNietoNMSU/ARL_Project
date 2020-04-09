@@ -4,22 +4,25 @@ import Alert from "@material-ui/lab/Alert";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
+import Axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import ReactHtmlParser from "react-html-parser";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(4),
       align: "center",
-      width: "50%"
-    }
+      width: "50%",
+    },
   },
   button: {
     margin: theme.spacing(4),
-    width: "30%"
-  }
+    width: "30%",
+  },
 }));
 
 function AddFinding(props) {
@@ -31,20 +34,43 @@ function AddFinding(props) {
   const classes = useStyles();
   const history = useHistory();
 
+  const handleEditorChange = (content, editor) => {
+    console.log("Content was updated:", content);
+  };
+
   const handleClick = () => {
-    axios
-      .put(
-        "http://localhost:3001/addfinding?projectname=" +
-          props.location.AddFindingProps +
-          "&name=" +
-          title +
-          "&desc=" +
-          desc
-      )
-      .then(response => {
-        setAlert(true);
-        if (response.status !== 200) setError(true);
-      });
+    const taskid = props.location.taskID ? props.location.taskID : "0";
+    const formData = new FormData();
+    formData.append("name", title);
+    formData.append("desc", desc);
+    formData.append("taskid", taskid);
+    Axios({
+      url: "http://localhost:3001/test",
+      method: "PUT",
+      data: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      setAlert(true);
+      if (response.status !== 200) setError(true);
+    });
+    // axios
+    //   .put(
+    //     "http://localhost:3001/addfinding?projectname=" +
+    //       props.location.AddFindingProps +
+    //       "&name=" +
+    //       title +
+    //       "&desc=" +
+    //       desc +
+    //       "&taskid=" +
+    //       taskid,
+    //     { formData }
+    //   )
+    //   .then((response) => {
+    //     setAlert(true);
+    //     if (response.status !== 200) setError(true);
+    //   });
   };
 
   if (props.location.AddFindingProps !== undefined)
@@ -52,7 +78,7 @@ function AddFinding(props) {
       <Grid container spacing={2}>
         <Grid item xs={12} align="left">
           <Typography variant="h5">
-            {props.location.AddFindingProps} Add Finding
+            {props.location.AddFindingProps} / Add Finding
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -72,7 +98,7 @@ function AddFinding(props) {
                 </Button>
               }
             >
-              {error ? "Insert failed" : "Successfully inseted task!"}
+              {error ? "Insert failed" : "Successfully inseted Finding!"}
             </Alert>
           )}
         </Grid>
@@ -84,18 +110,25 @@ function AddFinding(props) {
               label="Title"
               multiline
               value={title}
-              onChange={e => {
+              onChange={(e) => {
                 setTitle(e.target.value);
               }}
             />
-            <TextField
-              id="description"
-              label="Description"
-              multiline
-              variant="outlined"
-              value={desc}
-              onChange={e => {
-                setDesc(e.target.value);
+            <CKEditor
+              editor={ClassicEditor}
+              data="<p></p>"
+              onInit={(editor) => {
+                // You can store the "editor" and use when it is needed.
+                console.log("Editor is ready to use!", editor);
+              }}
+              onChange={(event, editor) => {
+                setDesc(editor.getData());
+              }}
+              onBlur={(event, editor) => {
+                console.log("Blur");
+              }}
+              onFocus={(event, editor) => {
+                console.log("Focus");
               }}
             />
           </form>
@@ -112,6 +145,7 @@ function AddFinding(props) {
             Save
           </Button>
         </Grid>
+        {/* {ReactHtmlParser(desc)} */}
       </Grid>
     );
   else {

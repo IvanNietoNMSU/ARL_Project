@@ -50,7 +50,7 @@ function AddFinding(props) {
       <Grid container spacing={2}>
         <Grid item xs={12} align="left">
           <Typography variant="h5">
-            {props.location.AddFindingProps} Add Task
+            {props.location.AddFindingProps} / Add Task
           </Typography>
         </Grid>
         <Grid item xs={12}>

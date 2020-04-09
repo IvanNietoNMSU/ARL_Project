@@ -13,53 +13,55 @@ import NoteOutlinedIcon from "@material-ui/icons/NoteOutlined";
 import EditIcon from "@material-ui/icons/Edit";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import { Link } from "react-router-dom";
+import ReactHtmlParser from "react-html-parser";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%"
+    width: "100%",
   },
   heading: {
-    fontSize: theme.typography.pxToRem(15)
+    fontSize: theme.typography.pxToRem(15),
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
   },
   icon: {
     verticalAlign: "bottom",
     height: 20,
-    width: 20
+    width: 20,
   },
   details: {
-    alignItems: "center"
+    alignItems: "center",
   },
   column: {
     flexBasis: "20%",
-    alignItems: "right"
+    alignItems: "right",
   },
   columnmain: {
-    flexBasis: "100%"
+    flexBasis: "100%",
   },
   columnicon: {
-    flexBasis: "8%"
+    flexBasis: "8%",
   },
   helper: {
     borderLeft: `2px solid ${theme.palette.divider}`,
-    padding: theme.spacing(1, 2)
+    padding: theme.spacing(1, 2),
   },
   dropdown: {
-    alignItems: "center"
+    alignItems: "center",
   },
   link: {
     color: theme.palette.primary.main,
     textDecoration: "none",
     "&:hover": {
-      textDecoration: "underline"
-    }
-  }
+      textDecoration: "underline",
+    },
+  },
 }));
 
-const Items = props => {
+const Items = (props) => {
   const classes = useStyles();
   const [items, setItems] = useState(undefined);
   const [project, setProject] = useState(props.name);
@@ -74,8 +76,9 @@ const Items = props => {
   if (!flag && props.name !== undefined) {
     axios
       .get("http://localhost:3001/getentries?name=" + props.name)
-      .then(response => {
+      .then((response) => {
         setItems(response.data);
+        console.log(response.data);
       });
     setFlag(!flag);
   }
@@ -102,7 +105,7 @@ const Items = props => {
           </ExpansionPanelSummary>
         </ExpansionPanel>
         {!!Array.isArray(items) &&
-          items.map(item => {
+          items.map((item) => {
             return (
               <ExpansionPanel>
                 <ExpansionPanelSummary
@@ -120,9 +123,7 @@ const Items = props => {
 
                   <div className={classes.columnmain}>
                     <Typography className={classes.secondaryHeading}>
-                      {`${item.id}${
-                        item.taskId !== undefined ? "-" + item.taskId : ""
-                      }/ ${item.title}`}
+                      {item.title}
                     </Typography>
                   </div>
 
@@ -142,24 +143,52 @@ const Items = props => {
                         style={{
                           display: "flex",
                           justifyContent: "center",
-                          flexWrap: "wrap"
+                          flexWrap: "wrap",
                         }}
                       >
-                        <Grid item xs={12} align="right">
-                          <Button
-                            onClick={() => {}}
-                            startIcon={<EditIcon />}
-                            align="right"
-                            variant="outlined"
-                            color="default"
-                            size="small"
-                          >
-                            Edit
-                          </Button>
+                        <Grid item container xs={12} align="right">
+                          <Grid item xs={12}>
+                            {item.type == "task" && (
+                              <Link
+                                to={{
+                                  pathname: "/AddFinding",
+                                  AddFindingProps: props.name,
+                                  taskID: item.taskId,
+                                }}
+                                style={{
+                                  textDecoration: "none",
+                                  color: "inherit",
+                                }}
+                              >
+                                <Button
+                                  onClick={() => {}}
+                                  startIcon={<EditIcon />}
+                                  align="right"
+                                  variant="outlined"
+                                  color="default"
+                                  size="small"
+                                >
+                                  Add Finding
+                                </Button>
+                              </Link>
+                            )}
+                            <Button
+                              onClick={() => {}}
+                              startIcon={<EditIcon />}
+                              align="right"
+                              variant="outlined"
+                              color="default"
+                              size="small"
+                            >
+                              Edit
+                            </Button>
+                          </Grid>
                         </Grid>
                         <Grid item xs={12}>
                           <Typography style={{ padding: 20 }}>
-                            {item.description}
+                            {item.type === "task"
+                              ? item.description
+                              : ReactHtmlParser(item.description)}
                           </Typography>
                         </Grid>
                       </Paper>

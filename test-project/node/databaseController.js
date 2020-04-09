@@ -1,28 +1,28 @@
 const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs");
+const git = require("nodegit");
+const rimraf = require("rimraf");
 
-// db.close();
 module.exports = {
-  createDatabase: async path => {
+  createDatabase: async (database) => {
     let db = new sqlite3.Database(
-      "./" + path + ".db",
+      "./" + database + "/" + database + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-      err => {
+      (err) => {
         if (err) console.log(err);
-        console.log("Database created successfully!");
+        console.log("Database" + database + "created successfully!");
       }
     );
     await db.close();
-    return path;
+    return database;
   },
 
   createTable: async (database, table, columns) => {
     let db = new sqlite3.Database(
-      "./" + database + ".db",
+      "./" + database + "/" + database + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-      err => {
+      (err) => {
         if (err) console.log(err);
-        else console.log("Success!");
       }
     );
 
@@ -33,16 +33,16 @@ module.exports = {
 
   insertQuery: async (database, sql) => {
     let db = new sqlite3.Database(
-      "./" + database + ".db",
+      "./" + database + "/" + database + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-      err => {
+      (err) => {
         if (err) console.log(err);
         else console.log("Connected to ", database);
       }
     );
 
     let promise = await new Promise((resolve, reject) => {
-      db.run(sql, [], function(err) {
+      db.run(sql, [], function (err) {
         if (err) console.log(err);
         console.log("Successfully inserted into " + database);
         resolve();
@@ -54,11 +54,10 @@ module.exports = {
 
   queryTable: async (database, sql) => {
     let db = new sqlite3.Database(
-      "./" + database + ".db",
+      "./" + database + "/" + database + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-      err => {
+      (err) => {
         if (err) console.log(err);
-        else console.log("Success!");
       }
     );
 
@@ -79,11 +78,11 @@ module.exports = {
   },
 
   initialize: async () => {
-    console.log("In initialize");
+    if (!fs.existsSync("./root")) fs.mkdirSync("./root");
     let db = new sqlite3.Database(
-      "./root.db",
+      "./root/root.db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-      err => {
+      (err) => {
         if (err) console.log(err);
         else console.log("Database created successfully!");
       }
@@ -98,12 +97,21 @@ module.exports = {
   },
 
   createProject: async (projectName, description) => {
+    if (fs.existsSync("./" + projectName)) return { status: 400 };
+
+    await fs.mkdirSync("./" + projectName);
+    const pathToRepo = require("path").resolve("./" + projectName);
+    const isBare = 0;
+    git.Repository.init(pathToRepo, isBare).then((repo) => {
+      console.log("Repo " + projectName + " created.");
+    });
+
     let path = "";
-    path = path.concat("./", projectName, ".db");
+    path = path.concat("./", projectName, "/", projectName, ".db");
     let db = new sqlite3.Database(
       path,
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-      err => {
+      (err) => {
         if (err) console.log(err);
         else console.log("Database created successfully!");
       }
@@ -112,7 +120,7 @@ module.exports = {
     db.run(
       "CREATE TABLE IF NOT EXISTS tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, type text, title text, assignedTo text, status text, description text )",
       [],
-      function(err) {
+      function (err) {
         if (err) console.log("ERROR:", err);
         console.log("Successfully inserted task table into " + projectName);
       }
@@ -120,7 +128,7 @@ module.exports = {
     db.run(
       "CREATE TABLE IF NOT EXISTS findings(id INTEGER PRIMARY KEY AUTOINCREMENT, taskId INTEGER, type text, title text, assignedTo text, status text, description text)",
       [],
-      function(err) {
+      function (err) {
         if (err) console.log("ERROR:", err);
         console.log("Successfully inserted findings table into " + projectName);
       }
@@ -128,11 +136,11 @@ module.exports = {
 
     await db.close();
 
-    db = new sqlite3.Database("./root.db");
+    db = new sqlite3.Database("./root/root.db");
 
     let sql = "INSERT INTO projects(projectName, description) VALUES (?, ?)";
 
-    db.run(sql, [projectName, description], function(err) {
+    db.run(sql, [projectName, description], function (err) {
       if (err) console.log(err);
       console.log("Successfully inserted");
     });
@@ -141,10 +149,11 @@ module.exports = {
   },
 
   allProjects: async () => {
+    if (!fs.existsSync("./root")) fs.mkdirSync("./root");
     let db = new sqlite3.Database(
-      "./root.db",
+      "./root/root.db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-      err => {
+      (err) => {
         if (err) console.log(err);
       }
     );
@@ -158,7 +167,7 @@ module.exports = {
           if (err) {
             return err;
           }
-          rows.map(item => {
+          rows.map((item) => {
             results.push(item);
           });
           resolve();
@@ -172,11 +181,10 @@ module.exports = {
 
   deleteEntry: async (database, sql, element) => {
     let db = new sqlite3.Database(
-      "./" + database + ".db",
+      "./" + database + "/" + database + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-      err => {
+      (err) => {
         if (err) console.log(err);
-        else console.log("Success!");
       }
     );
 
@@ -196,16 +204,15 @@ module.exports = {
     return results;
   },
 
-  deleteProject: async projects => {
+  deleteProject: async (projects) => {
     const { deleteEntry } = require("./databaseController");
-    projects.forEach(element => {
-      fs.unlink(element + ".db", async err => {
-        if (err) return err;
+    projects.forEach(async (element) => {
+      rimraf("./" + element, async () => {
         console.log(element, "deleted");
         const sql = "DELETE FROM projects WHERE projectName = ?";
         await deleteEntry("root", sql, element).catch();
       });
     });
     return { status: 200 };
-  }
+  },
 };

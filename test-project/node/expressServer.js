@@ -1,4 +1,5 @@
 const cors = require("cors");
+const fs = require("fs");
 const express = require("express");
 const app = express();
 const {
@@ -9,7 +10,7 @@ const {
   initialize,
   createProject,
   allProjects,
-  deleteProject
+  deleteProject,
 } = require("./databaseController"); //require(path.join(__dirname, "./databaseController"));
 
 module.exports.server = server;
@@ -51,20 +52,25 @@ async function server() {
         "SELECT * FROM tasks"
       ).catch();
       response = response.concat(response2);
-      res.send(response);
+      res.setHeader("Content-Type", "application/json");
+      res.json(response);
+      res.end();
     }
   });
 
   // Adds a finding to the specified project (database)
   app.put("/addfinding", async (req, res) => {
+    console.log(req, res);
     if (req.query.name === "undefined") res.send("Database name is required");
     else {
       let data =
-        '0,"finding", "' +
+        req.query.taskid +
+        ',"finding", "' +
         req.query.name +
         '", "none", "To Do", "' +
         req.query.desc +
         '" ';
+      console.log(data);
       let columns = " taskId , type , title, assignedTo , status, description ";
       let sql = "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
 
@@ -96,6 +102,10 @@ async function server() {
       const response = await deleteProject(req.query.projects.split(","));
       res.send(response);
     }
+  });
+
+  app.put("/test", async (req, res) => {
+    console.log(req);
   });
 
   initialize();
