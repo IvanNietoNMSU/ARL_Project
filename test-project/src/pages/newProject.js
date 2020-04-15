@@ -8,21 +8,21 @@ import SaveIcon from "@material-ui/icons/Save";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(4),
       align: "center",
-      width: "50%"
-    }
+      width: "50%",
+    },
   },
   button: {
     margin: theme.spacing(4),
-    width: "30%"
-  }
+    width: "30%",
+  },
 }));
 
-function NewProject() {
+function NewProject({ updateKey }) {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [alert, setAlert] = useState(false);
@@ -37,7 +37,7 @@ function NewProject() {
           "&description=" +
           desc
       )
-      .then(response => {
+      .then((response) => {
         setAlert(true);
         if (response.status !== 200) setError(true);
       });
@@ -55,8 +55,8 @@ function NewProject() {
                   color="inherit"
                   size="small"
                   onClick={() => {
-                    console.log("Clicked Closed!");
                     setAlert(false);
+                    updateKey(Math.random());
                   }}
                 >
                   CLOSE
@@ -80,7 +80,7 @@ function NewProject() {
               label="Title"
               multiline
               value={title}
-              onChange={e => {
+              onChange={(e) => {
                 setTitle(e.target.value);
               }}
             />
@@ -90,7 +90,7 @@ function NewProject() {
               multiline
               variant="outlined"
               value={desc}
-              onChange={e => {
+              onChange={(e) => {
                 setDesc(e.target.value);
               }}
             />

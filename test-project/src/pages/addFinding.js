@@ -4,12 +4,11 @@ import Alert from "@material-ui/lab/Alert";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Axios from "axios";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import ReactHtmlParser from "react-html-parser";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,43 +33,23 @@ function AddFinding(props) {
   const classes = useStyles();
   const history = useHistory();
 
-  const handleEditorChange = (content, editor) => {
-    console.log("Content was updated:", content);
-  };
+  // const handleEditorChange = (content, editor) => {
+  //   console.log("Content was updated:", content);
+  // };
 
   const handleClick = () => {
     const taskid = props.location.taskID ? props.location.taskID : "0";
-    const formData = new FormData();
-    formData.append("name", title);
-    formData.append("desc", desc);
-    formData.append("taskid", taskid);
-    Axios({
-      url: "http://localhost:3001/test",
-      method: "PUT",
-      data: formData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      setAlert(true);
-      if (response.status !== 200) setError(true);
-    });
-    // axios
-    //   .put(
-    //     "http://localhost:3001/addfinding?projectname=" +
-    //       props.location.AddFindingProps +
-    //       "&name=" +
-    //       title +
-    //       "&desc=" +
-    //       desc +
-    //       "&taskid=" +
-    //       taskid,
-    //     { formData }
-    //   )
-    //   .then((response) => {
-    //     setAlert(true);
-    //     if (response.status !== 200) setError(true);
-    //   });
+    axios
+      .put("http://localhost:3001/addfinding", {
+        projectname: props.location.AddFindingProps,
+        name: title,
+        desc: desc,
+        taskid: taskid,
+      })
+      .then((response) => {
+        setAlert(true);
+        if (response.status !== 200) setError(true);
+      });
   };
 
   if (props.location.AddFindingProps !== undefined)

@@ -2,6 +2,7 @@ const cors = require("cors");
 const fs = require("fs");
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 const {
   createTable,
   createDatabase,
@@ -16,7 +17,11 @@ const {
 module.exports.server = server;
 async function server() {
   app.use(cors());
+  // parse application/x-www-form-urlencoded
+  app.use(bodyParser.urlencoded({ extended: false }));
 
+  // parse application/json
+  app.use(bodyParser.json());
   // Creates root database for keeping track of
   // declared projects and usernames
   app.put("/initialize", async (req, res) => {
@@ -45,7 +50,7 @@ async function server() {
     else {
       let response = await queryTable(
         req.query.name,
-        "SELECT * FROM findings"
+        "SELECT * FROM findings WHERE taskid=0"
       ).catch();
       const response2 = await queryTable(
         req.query.name,
@@ -60,21 +65,19 @@ async function server() {
 
   // Adds a finding to the specified project (database)
   app.put("/addfinding", async (req, res) => {
-    console.log(req, res);
-    if (req.query.name === "undefined") res.send("Database name is required");
+    if (req.body.name === "undefined") res.send("Database name is required");
     else {
       let data =
-        req.query.taskid +
+        req.body.taskid +
         ',"finding", "' +
-        req.query.name +
+        req.body.name +
         '", "none", "To Do", "' +
-        req.query.desc +
+        req.body.desc +
         '" ';
-      console.log(data);
       let columns = " taskId , type , title, assignedTo , status, description ";
       let sql = "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
 
-      let response = await insertQuery(req.query.projectname, sql);
+      let response = await insertQuery(req.body.projectname, sql);
       res.send(response);
     }
   });
@@ -104,8 +107,21 @@ async function server() {
     }
   });
 
-  app.put("/test", async (req, res) => {
-    console.log(req);
+  app.get("/findingsoftask", async (req, res) => {
+    if (req.query.name === "undefined") res.send("Database name is required");
+    else {
+      const response = await queryTable(
+        req.query.name,
+        "SELECT * FROM findings WHERE taskid=" + req.query.taskid
+      ).catch();
+      res.setHeader("Content-Type", "application/json");
+      res.json(response);
+      res.end();
+    }
+  });
+
+  app.post("/test", (request, res) => {
+    console.log(request.body);
   });
 
   initialize();

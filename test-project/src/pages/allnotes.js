@@ -32,18 +32,22 @@ class AllNotes extends React.Component {
               <Link
                 to={{
                   pathname: "/AddFinding",
-                  AddFindingProps: this.props.location.AllNotesProps
+                  AddFindingProps: this.props.location.AllNotesProps,
                 }}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <Button variant="outlined" size="small">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  style={{ backgroundColor: "#f1f3f5" }}
+                >
                   Add Finding
                 </Button>
               </Link>
               <Link
                 to={{
                   pathname: "/AddTask",
-                  AddFindingProps: this.props.location.AllNotesProps
+                  AddFindingProps: this.props.location.AllNotesProps,
                 }}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
@@ -51,6 +55,7 @@ class AllNotes extends React.Component {
                   variant="outlined"
                   size="small"
                   onClick={this.handleClickFinding}
+                  style={{ backgroundColor: "#f1f3f5" }}
                 >
                   Add Task
                 </Button>
@@ -60,7 +65,12 @@ class AllNotes extends React.Component {
         </Grid>
 
         <Grid item xs={12}>
-          <Items target="all" name={this.props.location.AllNotesProps} />
+          <Items
+            target="all"
+            name={this.props.location.AllNotesProps}
+            props={this.props}
+            key={this.props.location.AllNotesProps}
+          />
         </Grid>
       </Grid>
     );

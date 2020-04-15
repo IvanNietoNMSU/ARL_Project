@@ -1,20 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 import NotesSharpIcon from "@material-ui/icons/NotesSharp";
 import NoteOutlinedIcon from "@material-ui/icons/NoteOutlined";
-import EditIcon from "@material-ui/icons/Edit";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import { Link } from "react-router-dom";
-import ReactHtmlParser from "react-html-parser";
+import NativeSelect from "@material-ui/core/NativeSelect";
+
+import Finding from "./finding";
+import Task from "./task";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,11 +64,13 @@ const Items = (props) => {
   const classes = useStyles();
   const [items, setItems] = useState(undefined);
   const [project, setProject] = useState(props.name);
+  const [refresh, setRefresh] = useState(false);
   const [flag, setFlag] = useState(false);
   const history = useHistory();
 
   if (project !== props.name) {
     setProject(props.name);
+    setRefresh(true);
     setFlag(false);
   }
 
@@ -78,11 +79,11 @@ const Items = (props) => {
       .get("http://localhost:3001/getentries?name=" + props.name)
       .then((response) => {
         setItems(response.data);
-        console.log(response.data);
       });
     setFlag(!flag);
   }
-  if (props.name !== undefined)
+
+  const body = (projectName) => {
     return (
       <div>
         <ExpansionPanel disabled>
@@ -107,8 +108,9 @@ const Items = (props) => {
         {!!Array.isArray(items) &&
           items.map((item) => {
             return (
-              <ExpansionPanel>
+              <ExpansionPanel key={item.id + item.title}>
                 <ExpansionPanelSummary
+                  key={item.id + item.title}
                   expandIcon={<ExpandMoreIcon />}
                   aria-label="Expand"
                   aria-controls="additional-actions1-content"
@@ -116,8 +118,9 @@ const Items = (props) => {
                 >
                   <div className={classes.columnicon}>
                     {(() => {
-                      if (item.type === "task") return <NoteOutlinedIcon />;
-                      else return <NotesSharpIcon />;
+                      if (item.type === "task")
+                        return <NoteOutlinedIcon key={item.id + item.title} />;
+                      else return <NotesSharpIcon key={item.id + item.title} />;
                     })()}
                   </div>
 
@@ -138,60 +141,16 @@ const Items = (props) => {
                 <ExpansionPanelDetails>
                   <Grid container>
                     <Grid item xs={12}>
-                      <Paper
-                        elevation={3}
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <Grid item container xs={12} align="right">
-                          <Grid item xs={12}>
-                            {item.type == "task" && (
-                              <Link
-                                to={{
-                                  pathname: "/AddFinding",
-                                  AddFindingProps: props.name,
-                                  taskID: item.taskId,
-                                }}
-                                style={{
-                                  textDecoration: "none",
-                                  color: "inherit",
-                                }}
-                              >
-                                <Button
-                                  onClick={() => {}}
-                                  startIcon={<EditIcon />}
-                                  align="right"
-                                  variant="outlined"
-                                  color="default"
-                                  size="small"
-                                >
-                                  Add Finding
-                                </Button>
-                              </Link>
-                            )}
-                            <Button
-                              onClick={() => {}}
-                              startIcon={<EditIcon />}
-                              align="right"
-                              variant="outlined"
-                              color="default"
-                              size="small"
-                            >
-                              Edit
-                            </Button>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Typography style={{ padding: 20 }}>
-                            {item.type === "task"
-                              ? item.description
-                              : ReactHtmlParser(item.description)}
-                          </Typography>
-                        </Grid>
-                      </Paper>
+                      {item.type === "task" && (
+                        <Task
+                          item={item}
+                          project={project}
+                          key={item.id + item.title}
+                        />
+                      )}
+                      {item.type === "finding" && (
+                        <Finding item={item} key={item.id + item.title} />
+                      )}
                     </Grid>
                   </Grid>
                 </ExpansionPanelDetails>
@@ -200,6 +159,9 @@ const Items = (props) => {
           })}
       </div>
     );
+  };
+
+  if (props.name !== undefined) return <Fragment>{body(project)}</Fragment>;
   else {
     history.push("/");
     return null;

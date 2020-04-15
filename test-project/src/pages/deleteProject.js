@@ -18,13 +18,13 @@ class DeleteProject extends React.Component {
       projects: [],
       delete: [],
       alert: false,
-      error: false
+      error: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount() {
     let that = this;
-    axios.get("http://localhost:3001/getallprojects?").then(response => {
+    axios.get("http://localhost:3001/getallprojects?").then((response) => {
       that.setState({ projects: response.data });
     });
   }
@@ -36,7 +36,7 @@ class DeleteProject extends React.Component {
         "http://localhost:3001/deleteprojects?projects=" +
           this.state.delete.toString()
       )
-      .then(response => {
+      .then((response) => {
         this.setState({ alert: true });
         if (response.status !== 200) this.setState({ error: true });
         console.log(response);
@@ -58,6 +58,7 @@ class DeleteProject extends React.Component {
                     size="small"
                     onClick={() => {
                       this.setState({ alert: false });
+                      this.props.updateKey(Math.random());
                     }}
                   >
                     CLOSE
@@ -78,7 +79,7 @@ class DeleteProject extends React.Component {
 
           <Grid item xs={12} align="center">
             <FormControl component="fieldset">
-              {this.state.projects.map(p => {
+              {this.state.projects.map((p) => {
                 return (
                   <FormControlLabel
                     control={
@@ -89,7 +90,7 @@ class DeleteProject extends React.Component {
                         key={p.name}
                       />
                     }
-                    onChange={event => {
+                    onChange={(event) => {
                       if (!this.state.delete.includes(event.target.value))
                         this.state.delete.push(event.target.value);
                       else this.state.delete.pop(event.target.value);
