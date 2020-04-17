@@ -12,13 +12,13 @@ class GetAllProjects extends React.Component {
     super(props);
     this.state = {
       projects: [],
-      flag: true
+      flag: true,
     };
   }
 
   componentDidMount() {
     let that = this;
-    axios.get("http://localhost:3001/getallprojects?").then(response => {
+    axios.get("http://localhost:3001/getallprojects?").then((response) => {
       that.setState({ projects: response.data });
     });
     this.setState({ flag: false });
@@ -28,21 +28,21 @@ class GetAllProjects extends React.Component {
     let projects = this.state.projects;
     return (
       <List>
-        {projects.map(p => {
+        {projects.map((p) => {
           return (
             <Link
               key={p.name}
               to={{
                 pathname: "/AllNotes",
                 AllNotesProps: p.name,
-                des: p.description
+                des: p.description,
               }}
               style={{ textDecoration: "none", color: "white" }}
               replace
             >
               <ListItem button key={p.name}>
                 <ListItemIcon>
-                  <LabelImportantIcon style={{ color: "#ca3e47" }} />
+                  <LabelImportantIcon style={{ color: "#F5DA65" }} />
                 </ListItemIcon>
                 <ListItemText primary={p.name} />
               </ListItem>

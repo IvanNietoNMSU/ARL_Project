@@ -32,10 +32,9 @@ class DeleteProject extends React.Component {
   handleClick() {
     console.log(this.state.delete);
     axios
-      .put(
-        "http://localhost:3001/deleteprojects?projects=" +
-          this.state.delete.toString()
-      )
+      .put("http://localhost:3001/deleteprojects", {
+        projects: this.state.delete,
+      })
       .then((response) => {
         this.setState({ alert: true });
         if (response.status !== 200) this.setState({ error: true });

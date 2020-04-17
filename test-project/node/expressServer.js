@@ -75,9 +75,19 @@ async function server() {
         req.body.desc +
         '" ';
       let columns = " taskId , type , title, assignedTo , status, description ";
-      let sql = "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
-
-      let response = await insertQuery(req.body.projectname, sql);
+      const sql =
+        "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
+      const sqlUpdate =
+        "UPDATE findings SET (" +
+        columns +
+        ") = ( " +
+        data +
+        ") WHERE id=" +
+        req.body.pk;
+      let response = await insertQuery(
+        req.body.projectname,
+        req.body.pk > -1 ? sqlUpdate : sql
+      );
       res.send(response);
     }
   });
@@ -99,10 +109,10 @@ async function server() {
   });
 
   app.put("/deleteprojects", async (req, res) => {
-    if (req.query.name === "undefined")
+    if (req.body.name === "undefined")
       res.send("Empty list of projects to delete");
     else {
-      const response = await deleteProject(req.query.projects.split(","));
+      const response = await deleteProject(req.body.projects);
       res.send(response);
     }
   });

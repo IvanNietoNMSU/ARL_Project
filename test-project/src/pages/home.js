@@ -3,6 +3,11 @@ import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import Lottie from "react-lottie";
 import animationData from "../animations/15224-cute-doggie.json";
+import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
+import LoopIcon from "@material-ui/icons/Loop";
+import LabelImportantIcon from "@material-ui/icons/LabelImportant";
+import MenuIcon from "@material-ui/icons/Menu";
 
 function Home() {
   const defaultOptions = {
@@ -10,17 +15,39 @@ function Home() {
     autoplay: true,
     animationData: animationData,
     rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
-
+  // <Lottie options={defaultOptions} height={400} width={400} />
   return (
-    <Grid container align="center">
-      <Grid item xs={12}>
-        <Typography variant="h5">Welcome Home!</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Lottie options={defaultOptions} height={400} width={400} />
+    <Grid container align="center" spacing={3}>
+      <Grid item container xs={12} spacing={1}>
+        <Grid item xs={12}>
+          <Typography>
+            To create a new project click the{" "}
+            {<AddIcon style={{ color: "#F5DA65" }} />} icon
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography>
+            To delete a project click the{" "}
+            {<DeleteIcon style={{ color: "#F5DA65" }} />} icon
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography>
+            To sync a project with another user on your local network click the{" "}
+            {<LoopIcon style={{ color: "#F5DA65" }} />} icon
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography>
+            To view one of your projects click the corresponding{" "}
+            {<LabelImportantIcon style={{ color: "#F5DA65" }} />} icon or click
+            the {<MenuIcon style={{ color: "#F5DA65" }} />} icon to see the full
+            names of your projects.
+          </Typography>
+        </Grid>
       </Grid>
     </Grid>
   );

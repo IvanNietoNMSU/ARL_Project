@@ -27,6 +27,12 @@ const Task = (item, project) => {
       })
       .then((response) => {
         if (response.status !== 200) console.log("error");
+        for (let i = 0; response.data[i]; i++)
+          response.data[i] = {
+            ...response.data[i],
+            project: item.project,
+            taskID: item.item.id,
+          };
         setItems(response.data);
       });
   };
@@ -116,7 +122,11 @@ const Task = (item, project) => {
                   </ExpansionPanelSummary>
 
                   <ExpansionPanelDetails>
-                    <Finding item={item} key={item.id + item.title} />
+                    <Finding
+                      item={item}
+                      key={item.id + item.title}
+                      project={item.project}
+                    />
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               </Grid>

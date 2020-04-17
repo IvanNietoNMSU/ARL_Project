@@ -26,8 +26,12 @@ const useStyles = makeStyles((theme) => ({
 
 function AddFinding(props) {
   // eslint-disable-next-line
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
+  const [title, setTitle] = useState(
+    props.location.title ? props.location.title : ""
+  );
+  const [desc, setDesc] = useState(
+    props.location.desc ? props.location.desc : "<p></p>"
+  );
   const [alert, setAlert] = useState(false);
   const [error, setError] = useState(false);
   const classes = useStyles();
@@ -45,6 +49,7 @@ function AddFinding(props) {
         name: title,
         desc: desc,
         taskid: taskid,
+        pk: props.location.pk ? props.location.pk : -1,
       })
       .then((response) => {
         setAlert(true);
@@ -69,7 +74,6 @@ function AddFinding(props) {
                   color="inherit"
                   size="small"
                   onClick={() => {
-                    console.log("Clicked Closed!");
                     setAlert(false);
                   }}
                 >
@@ -95,10 +99,10 @@ function AddFinding(props) {
             />
             <CKEditor
               editor={ClassicEditor}
-              data="<p></p>"
+              data={desc}
               onInit={(editor) => {
                 // You can store the "editor" and use when it is needed.
-                console.log("Editor is ready to use!", editor);
+                console.log("Editor is ready to use!");
               }}
               onChange={(event, editor) => {
                 setDesc(editor.getData());

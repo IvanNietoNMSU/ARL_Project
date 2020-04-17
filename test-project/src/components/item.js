@@ -10,7 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import NotesSharpIcon from "@material-ui/icons/NotesSharp";
 import NoteOutlinedIcon from "@material-ui/icons/NoteOutlined";
 import Grid from "@material-ui/core/Grid";
-import NativeSelect from "@material-ui/core/NativeSelect";
 
 import Finding from "./finding";
 import Task from "./task";
@@ -64,13 +63,11 @@ const Items = (props) => {
   const classes = useStyles();
   const [items, setItems] = useState(undefined);
   const [project, setProject] = useState(props.name);
-  const [refresh, setRefresh] = useState(false);
   const [flag, setFlag] = useState(false);
   const history = useHistory();
 
   if (project !== props.name) {
     setProject(props.name);
-    setRefresh(true);
     setFlag(false);
   }
 
@@ -78,6 +75,8 @@ const Items = (props) => {
     axios
       .get("http://localhost:3001/getentries?name=" + props.name)
       .then((response) => {
+        for (let i = 0; response.data[i]; i++)
+          response.data[i] = { ...response.data[i], project: props.name };
         setItems(response.data);
       });
     setFlag(!flag);
@@ -149,7 +148,11 @@ const Items = (props) => {
                         />
                       )}
                       {item.type === "finding" && (
-                        <Finding item={item} key={item.id + item.title} />
+                        <Finding
+                          item={item}
+                          key={item.id + item.title}
+                          project={item.project}
+                        />
                       )}
                     </Grid>
                   </Grid>

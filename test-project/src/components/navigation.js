@@ -29,12 +29,6 @@ import GetAllProjects from "../scrypts/getProjects";
 import banner from "../img/banner.jpg";
 
 const drawerWidth = 240;
-/**
- * https://colorhunt.co/palette/149559
- *
- * Light color: 525252
- *
- */
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -169,9 +163,9 @@ function Navigation(props) {
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
-              <ChevronRightIcon style={{ color: "#ca3e47" }} />
+              <ChevronRightIcon style={{ color: "#F5DA65" }} />
             ) : (
-              <ChevronLeftIcon style={{ color: "#ca3e47" }} />
+              <ChevronLeftIcon style={{ color: "#F5DA65" }} />
             )}
           </IconButton>
         </div>
@@ -184,7 +178,7 @@ function Navigation(props) {
           >
             <ListItem button key="Sync">
               <ListItemIcon>
-                <LoopIcon style={{ color: "#ca3e47" }} />
+                <LoopIcon style={{ color: "#F5DA65" }} />
               </ListItemIcon>
               <ListItemText primary="syncNotes" />
             </ListItem>
@@ -197,7 +191,7 @@ function Navigation(props) {
           >
             <ListItem button key="newProject">
               <ListItemIcon>
-                <AddIcon style={{ color: "#ca3e47" }} />
+                <AddIcon style={{ color: "#F5DA65" }} />
               </ListItemIcon>
               <ListItemText primary="New Project" />
             </ListItem>
@@ -209,7 +203,7 @@ function Navigation(props) {
           >
             <ListItem button key="deleteProject">
               <ListItemIcon>
-                <DeleteIcon style={{ color: "#ca3e47" }} />
+                <DeleteIcon style={{ color: "#F5DA65" }} />
               </ListItemIcon>
               <ListItemText primary="Delete Project" />
             </ListItem>
