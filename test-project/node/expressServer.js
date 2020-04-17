@@ -1,5 +1,4 @@
 const cors = require("cors");
-const fs = require("fs");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -130,8 +129,15 @@ async function server() {
     }
   });
 
-  app.post("/test", (request, res) => {
-    console.log(request.body);
+  app.put("/uploadimage", async (req, res) => {
+    console.log(req);
+    if (req.body.name === "undefined") res.send("Database name is required");
+    else {
+      const sql =
+        "INSERT INTO images ( image ) VALUES ( " + req.body.image + ")";
+      const response = await insertQuery(req.body.name, sql);
+      res.send(response);
+    }
   });
 
   initialize();

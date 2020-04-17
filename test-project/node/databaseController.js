@@ -122,7 +122,6 @@ module.exports = {
       [],
       function (err) {
         if (err) console.log("ERROR:", err);
-        console.log("Successfully inserted task table into " + projectName);
       }
     );
     db.run(
@@ -130,7 +129,14 @@ module.exports = {
       [],
       function (err) {
         if (err) console.log("ERROR:", err);
-        console.log("Successfully inserted findings table into " + projectName);
+      }
+    );
+    db.run(
+      "CREATE TABLE IF NOT EXISTS images(id INTEGER PRIMARY KEY AUTOINCREMENT, image blob )",
+      [],
+      function (err) {
+        if (err) console.log("ERROR:", err);
+        console.log("Successfully created table images");
       }
     );
 

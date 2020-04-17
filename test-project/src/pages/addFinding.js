@@ -8,8 +8,7 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
+import config from "../scrypts/editorConfig";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -98,7 +97,7 @@ function AddFinding(props) {
               }}
             />
             <CKEditor
-              editor={ClassicEditor}
+              editor={config}
               data={desc}
               onInit={(editor) => {
                 // You can store the "editor" and use when it is needed.
