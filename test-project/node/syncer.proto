@@ -10,7 +10,12 @@ service DatabaseSync {
 }
 
 message DataInput {
-  string input = 1;
+  uint32 taskId = 1;
+  string type = 2;
+  string title = 3;
+  string assignedTo = 4;
+  string status = 5;
+  string description = 6;
 }
 
 message Status {
