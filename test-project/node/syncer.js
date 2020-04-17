@@ -24,6 +24,8 @@ function syncData(call, callback) {
   console.log("[status]      " + call.request.status)
   console.log("[description] " + call.request.description)
   console.log("[*] End recieved data [*]")
+
+  // insert into the desired database here
   callback(null, {status: 200});// + call.request.name});
 }
 
@@ -34,7 +36,9 @@ const {
 
 module.exports = {
 
-	/* CLIENT code */
+	/* 
+	 * CLIENT code 
+	 */
 	syncData_client: async (ip,port) => {
 
 	  console.log("[*] Syncing Data to server on port: " + port)
@@ -79,7 +83,9 @@ module.exports = {
 	  });
 	},
 
-	/* SERVER code */
+	/* 
+	 * SERVER code :: syncData is called when a connection is made 
+	 */
 	syncData_server: async (port) => {
 	  console.log("[*] Starting server on port: " + port)
 	  var server = new grpc.Server();
