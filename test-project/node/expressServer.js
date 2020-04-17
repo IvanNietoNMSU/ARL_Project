@@ -13,6 +13,12 @@ const {
   deleteProject,
 } = require("./databaseController"); //require(path.join(__dirname, "./databaseController"));
 
+const {
+	syncData_client,
+	syncData_server
+} = require("./syncer.js");
+
+
 module.exports.server = server;
 async function server() {
   app.use(cors());
@@ -38,11 +44,23 @@ async function server() {
     }
   });
 
+
   // Returns all projects declared by user as stated in projects table of root database
   app.get("/getallprojects", async (req, res) => {
     let response = await allProjects();
     res.send(response);
   });
+
+  app.get("/syncdata_client", async (req, res) => {
+    let response = await syncData_client(req.query.ip,req.query.port);
+    res.send(response);
+  });
+
+  app.get("/syncdata_server", async (req, res) => {
+    let response = await syncData_server(req.query.port);
+    res.send(response);
+  });
+
 
   app.get("/getentries", async (req, res) => {
     if (req.query.name === "undefined") res.send("Database name is required");

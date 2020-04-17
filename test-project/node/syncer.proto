@@ -1,0 +1,25 @@
+
+syntax = "proto3";
+
+package syncer;
+
+service DatabaseSync {
+
+  rpc SyncData (DataInput) returns (Status) {}
+
+}
+
+message DataInput {
+  uint32 taskId = 1;
+  string type = 2;
+  string title = 3;
+  string assignedTo = 4;
+  string status = 5;
+  string description = 6;
+}
+
+message Status {
+  uint32 status = 1;
+}
+
+
