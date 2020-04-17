@@ -45,9 +45,4 @@ function App() {
   );
 }
 
-// <Route
-//   path="/NewProject"
-//   component={() => <Navigation main={<NewProject />} />}
-// />;
-
 export default App;
