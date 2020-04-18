@@ -69,7 +69,6 @@ module.exports = {
           reject();
           return err;
         }
-        console.log("blahblahblah");
         results = rows;
         resolve();
       });

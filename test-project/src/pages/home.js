@@ -1,8 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
-import Lottie from "react-lottie";
-import animationData from "../animations/15224-cute-doggie.json";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LoopIcon from "@material-ui/icons/Loop";
@@ -10,14 +8,6 @@ import LabelImportantIcon from "@material-ui/icons/LabelImportant";
 import MenuIcon from "@material-ui/icons/Menu";
 
 function Home() {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
   // <Lottie options={defaultOptions} height={400} width={400} />
   return (
     <Grid container align="center" spacing={3}>

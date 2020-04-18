@@ -46,12 +46,18 @@ async function server() {
     res.send(response);
   });
 
-  app.get("/syncdata_client", async (req, res) => {
-    let response = await syncData_client(req.body.ip, req.body.port);
+  app.put("/syncdata_client", async (req, res) => {
+    console.log(req.body);
+    let response = await syncData_client(
+      req.body.ip,
+      req.body.port,
+      req.body.project
+    );
     res.send(response);
   });
 
-  app.get("/syncdata_server", async (req, res) => {
+  app.put("/syncdata_server", async (req, res) => {
+    console.log(req.body);
     let response = await syncData_server(req.body.port);
     res.send(response);
   });
