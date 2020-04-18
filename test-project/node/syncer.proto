@@ -16,6 +16,8 @@ message DataInput {
   string assignedTo = 4;
   string status = 5;
   string description = 6;
+  string database = 7;
+  uint32 id = 8;
 }
 
 message Status {

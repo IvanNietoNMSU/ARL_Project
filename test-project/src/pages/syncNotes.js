@@ -9,10 +9,9 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@material-ui/core";
-import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Alert from "@material-ui/lab/Alert";
-
+import DescriptionIcon from "@material-ui/icons/Description";
+import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 export default class SyncNotes extends React.Component {
   constructor(props) {
     super(props);
@@ -73,7 +72,6 @@ export default class SyncNotes extends React.Component {
                   color="inherit"
                   size="small"
                   onClick={() => {
-                    console.log("Clicked Closed!");
                     this.setState({ alert: false });
                   }}
                 >
@@ -150,8 +148,8 @@ export default class SyncNotes extends React.Component {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        icon={<DeleteOutlinedIcon />}
-                        checkedIcon={<DeleteIcon />}
+                        icon={<DescriptionOutlinedIcon />}
+                        checkedIcon={<DescriptionIcon />}
                         disabled={this.state.disabled}
                         value={p.name}
                         key={p.name}

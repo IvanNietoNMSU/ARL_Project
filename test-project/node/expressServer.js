@@ -47,7 +47,6 @@ async function server() {
   });
 
   app.put("/syncdata_client", async (req, res) => {
-    console.log(req.body);
     let response = await syncData_client(
       req.body.ip,
       req.body.port,
@@ -57,7 +56,6 @@ async function server() {
   });
 
   app.put("/syncdata_server", async (req, res) => {
-    console.log(req.body);
     let response = await syncData_server(req.body.port);
     res.send(response);
   });

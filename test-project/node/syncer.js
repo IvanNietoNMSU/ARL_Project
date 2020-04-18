@@ -20,17 +20,28 @@ var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 var syncer_proto = grpc.loadPackageDefinition(packageDefinition).syncer;
 
-function syncData(call, callback) {
+async function syncData(call, callback) {
   console.log("[*] Recieved some data to store [*]");
   console.log("[type]        " + call.request.type);
   console.log("[title]       " + call.request.title);
   console.log("[assignedTo]  " + call.request.assignedTo);
   console.log("[status]      " + call.request.status);
   console.log("[description] " + call.request.description);
+  console.log("[database]    " + call.request.database);
   console.log("[*] End recieved data [*]");
 
   // insert into the desired database here
-  callback(null, { status: 200 }); // + call.request.name});
+  let data =
+    call.request.taskId +
+    ',"finding", "' +
+    call.request.title +
+    '", "none", "To Do", "' +
+    call.request.description +
+    '" ';
+  let columns = " taskId , type , title, assignedTo , status, description ";
+  const sql = "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
+  let response = await insertQuery(call.request.database, sql);
+  callback(null, { status: 200, response: response }); // + call.request.name});
 }
 
 module.exports = {
@@ -61,6 +72,10 @@ module.exports = {
           return err;
         }
         console.log("Sending data over!");
+
+        for (let i = 0; rows[i]; i++)
+          rows[i] = { ...rows[i], project: database };
+
         rows.map((item) => {
           // send entry to server through grpc connection
           // build the grpc object from the fields pulled out of the db
@@ -74,9 +89,12 @@ module.exports = {
               assignedTo: item.assignedTo,
               status: item.status,
               description: item.description,
+              database: item.project,
+              id: item.id,
             },
             function (err, response) {
-              console.log("Status:", response.status);
+              if (err) console.log(err);
+              else console.log("Status:", response.status);
             }
           );
         });

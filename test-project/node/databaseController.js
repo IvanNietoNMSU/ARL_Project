@@ -1,6 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs");
-const git = require("nodegit");
 const rimraf = require("rimraf");
 
 module.exports = {
@@ -101,10 +100,6 @@ module.exports = {
 
     await fs.mkdirSync("./" + projectName);
     const pathToRepo = require("path").resolve("./" + projectName);
-    const isBare = 0;
-    git.Repository.init(pathToRepo, isBare).then((repo) => {
-      console.log("Repo " + projectName + " created.");
-    });
 
     let path = "";
     path = path.concat("./", projectName, "/", projectName, ".db");
