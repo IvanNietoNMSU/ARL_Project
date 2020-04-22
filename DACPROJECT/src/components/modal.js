@@ -2,15 +2,14 @@ import React from "react";
 import Modal from "@material-ui/core/Modal";
 import Lottie from "react-lottie";
 import { Typography, Container } from "@material-ui/core";
-import animationData3 from "../animations/528-spinner-loading.json";
 
 const defaultOptions = {
   loop: true,
   autoplay: true,
   animationData: animationData3,
   rendererSettings: {
-    preserveAspectRatio: "xMidYMid slice"
-  }
+    preserveAspectRatio: "xMidYMid slice",
+  },
 };
 
 export default function SimpleModal() {
