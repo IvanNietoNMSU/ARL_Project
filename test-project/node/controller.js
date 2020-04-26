@@ -2,7 +2,7 @@ const {
   createTable,
   createDatabase,
   queryTable,
-  insertQuery
+  insertQuery,
 } = require("./databaseController");
 
 let path = createDatabase("./project1.db");

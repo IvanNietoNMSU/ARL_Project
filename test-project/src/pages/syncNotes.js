@@ -117,7 +117,7 @@ export default class SyncNotes extends React.Component {
           </Grid>
           <Grid item container xs={12} justify="center">
             <form noValidate autoComplete="off">
-              {this.state.server === "contained" && (
+              {this.state.client === "contained" && (
                 <Grid item xs={12}>
                   <TextField
                     id="standard-basic"
@@ -143,28 +143,29 @@ export default class SyncNotes extends React.Component {
           </Grid>
           <Grid item xs={12} align="center">
             <FormControl component="fieldset">
-              {this.state.projects.map((p) => {
-                return (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        icon={<DescriptionOutlinedIcon />}
-                        checkedIcon={<DescriptionIcon />}
-                        disabled={this.state.disabled}
-                        value={p.name}
-                        key={p.name}
-                      />
-                    }
-                    onChange={(event) => {
-                      if (!this.state.delete.includes(event.target.value))
-                        this.state.delete.push(event.target.value);
-                      else this.state.delete.pop(event.target.value);
-                    }}
-                    label={p.name}
-                    key={p.name}
-                  />
-                );
-              })}
+              {this.state.client === "contained" &&
+                this.state.projects.map((p) => {
+                  return (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          icon={<DescriptionOutlinedIcon />}
+                          checkedIcon={<DescriptionIcon />}
+                          disabled={this.state.disabled}
+                          value={p.name}
+                          key={p.name}
+                        />
+                      }
+                      onChange={(event) => {
+                        if (!this.state.delete.includes(event.target.value))
+                          this.state.delete.push(event.target.value);
+                        else this.state.delete.pop(event.target.value);
+                      }}
+                      label={p.name}
+                      key={p.name}
+                    />
+                  );
+                })}
             </FormControl>
           </Grid>
           <Grid item xs={12}>

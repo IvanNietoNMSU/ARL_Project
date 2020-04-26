@@ -10,6 +10,7 @@ import NewProject from "./pages/newProject";
 import DeleteProject from "./pages/deleteProject";
 import AddFinding from "./pages/addFinding";
 import AddTask from "./pages/addTask";
+import User from "./pages/user";
 
 function App() {
   const [Key, setKey] = useState(Math.random());
@@ -23,6 +24,7 @@ function App() {
             <Switch>
               <Route exact path="/" extract component={Home} />
               <Route exact path="/Nav" component={TextEdit} />
+              <Route exact path="/User" component={User} />
               <Route exact path="/SyncNotes" component={SyncNotes} />
               <Route
                 exact

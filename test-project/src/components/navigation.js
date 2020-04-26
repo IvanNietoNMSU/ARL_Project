@@ -24,6 +24,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import LoopIcon from "@material-ui/icons/Loop";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import GetAllProjects from "../scrypts/getProjects";
 import banner from "../img/banner.jpg";
@@ -208,6 +209,16 @@ function Navigation(props) {
               <ListItemText primary="Delete Project" />
             </ListItem>
           </Link>
+
+          {/*User button*/}
+          {/* <Link to="/User" style={{ textDecoration: "none", color: "white" }}>
+            <ListItem button key="deleteProject">
+              <ListItemIcon>
+                <AccountCircleIcon style={{ color: "#F5DA65" }} />
+              </ListItemIcon>
+              <ListItemText primary="Delete Project" />
+            </ListItem>
+          </Link> */}
         </List>
         <Divider />
         {/* Projects */}

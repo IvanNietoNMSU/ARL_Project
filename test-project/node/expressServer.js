@@ -12,7 +12,8 @@ const {
   allProjects,
   deleteProject,
 } = require("./databaseController"); //require(path.join(__dirname, "./databaseController"));
-
+const { Export2Doc } = require("./convertScript");
+const { htmlToWord } = require("./htmlToWork");
 const { syncData_client, syncData_server } = require("./syncer.js");
 
 module.exports.server = server;
@@ -127,6 +128,16 @@ async function server() {
     if (req.body.name === "undefined")
       res.send("Empty list of projects to delete");
     else {
+      const user = await queryTable(
+        "root",
+        "SELECT userName FROM users"
+      ).catch();
+      if (user.length < 1) {
+        await insertQuery(
+          "root",
+          'INSERT INTO users ( "id", "userName" ) VALUES ( 0, "Test McTester" )'
+        );
+      }
       const response = await deleteProject(req.body.projects);
       res.send(response);
     }
@@ -146,7 +157,6 @@ async function server() {
   });
 
   app.put("/uploadimage", async (req, res) => {
-    console.log(req);
     if (req.body.name === "undefined") res.send("Database name is required");
     else {
       const sql =
@@ -154,6 +164,39 @@ async function server() {
       const response = await insertQuery(req.body.name, sql);
       res.send(response);
     }
+  });
+
+  app.get("/getuser", async (req, res) => {
+    const user = await queryTable("root", "SELECT userName FROM users").catch();
+    if (user.length < 1) {
+      await insertQuery(
+        "root",
+        'INSERT INTO users ( "id", "userName" ) VALUES ( 0, "Test McTester" )'
+      );
+    }
+
+    const response = await queryTable(
+      "root",
+      "SELECT userName FROM users WHERE id=0"
+    ).catch();
+    res.setHeader("Content-Type", "application/json");
+    res.json(response[0].userName);
+    res.end();
+  });
+
+  app.put("/updateusername", async (req, res) => {
+    const response = await insertQuery(
+      "root",
+      'UPDATE users SET( "userName" ) = ( "' +
+        req.body.username +
+        '" ) WHERE id=0'
+    );
+    res.send(response);
+  });
+
+  app.put("/exportproject", async (req, res) => {
+    const response = await htmlToWord(req.body.name).catch();
+    res.send(response);
   });
 
   initialize();
