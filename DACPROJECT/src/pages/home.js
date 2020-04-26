@@ -8,7 +8,6 @@ import LabelImportantIcon from "@material-ui/icons/LabelImportant";
 import MenuIcon from "@material-ui/icons/Menu";
 
 function Home() {
-  // <Lottie options={defaultOptions} height={400} width={400} />
   return (
     <Grid container align="center" spacing={3}>
       <Grid item container xs={12} spacing={1}>

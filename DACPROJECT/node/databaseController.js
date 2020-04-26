@@ -56,7 +56,7 @@ module.exports = {
       "./" + database + "/" + database + ".db",
       sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
       (err) => {
-        if (err) console.log(err);
+        if (err) console.log(err, sql);
       }
     );
 
@@ -64,7 +64,7 @@ module.exports = {
     let promise = await new Promise((resolve, reject) => {
       db.all(sql, [], (err, rows) => {
         if (err) {
-          console.log(err);
+          console.log(err, sql);
           reject();
           return err;
         }
@@ -90,7 +90,9 @@ module.exports = {
     db.run(
       "CREATE TABLE IF NOT EXISTS projects (projectName text, description, text)"
     );
-    db.run("CREATE TABLE IF NOT EXISTS users (userName text)");
+    db.run(
+      "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, userName text)"
+    );
 
     await db.close();
   },
