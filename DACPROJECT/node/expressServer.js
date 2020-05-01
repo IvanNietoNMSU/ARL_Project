@@ -3,16 +3,13 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const {
-  createTable,
-  createDatabase,
   queryTable,
   insertQuery,
   initialize,
   createProject,
   allProjects,
   deleteProject,
-} = require("./databaseController"); //require(path.join(__dirname, "./databaseController"));
-const { Export2Doc } = require("./convertScript");
+} = require("./databaseController");
 const { htmlToWord } = require("./htmlToWork");
 const { syncData_client, syncData_server } = require("./syncer.js");
 
@@ -87,7 +84,11 @@ async function server() {
         req.body.taskid +
         ',"finding", "' +
         req.body.name +
-        '", "none", "To Do", "' +
+        '", "' +
+        req.body.assigne +
+        '", "' +
+        req.body.status +
+        '", "' +
         req.body.desc +
         '" ';
       let columns = " taskId , type , title, assignedTo , status, description ";
@@ -115,7 +116,11 @@ async function server() {
       const data =
         '"task", "' +
         req.query.name +
-        '", "none", "To Do", "' +
+        '", "' +
+        req.query.assigne +
+        '", "' +
+        req.query.status +
+        '", "' +
         req.query.desc +
         '" ';
       const sql = "INSERT INTO tasks (" + columns + ") VALUES ( " + data + ")";
@@ -166,21 +171,14 @@ async function server() {
     }
   });
 
-  app.get("/getuser", async (req, res) => {
-    const user = await queryTable("root", "SELECT userName FROM users").catch();
-    if (user.length < 1) {
-      await insertQuery(
-        "root",
-        'INSERT INTO users ( "id", "userName" ) VALUES ( 0, "Test McTester" )'
-      );
-    }
-
+  app.get("/getusers", async (req, res) => {
     const response = await queryTable(
       "root",
-      "SELECT userName FROM users WHERE id=0"
+      "SELECT userName FROM users"
     ).catch();
+
     res.setHeader("Content-Type", "application/json");
-    res.json(response[0].userName);
+    res.json(response);
     res.end();
   });
 
@@ -196,6 +194,13 @@ async function server() {
 
   app.put("/exportproject", async (req, res) => {
     const response = await htmlToWord(req.body.name).catch();
+    res.send(response);
+  });
+
+  app.put("/adduser", async (req, res) => {
+    const sql =
+      'INSERT INTO users( userName ) VALUES ( "' + req.body.username + '" )';
+    const response = await insertQuery("root", sql);
     res.send(response);
   });
 

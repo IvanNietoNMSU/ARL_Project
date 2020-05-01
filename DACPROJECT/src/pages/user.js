@@ -8,7 +8,7 @@ class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      users: [],
       alert: false,
       error: false,
     };
@@ -16,14 +16,15 @@ class User extends React.Component {
 
   componentDidMount() {
     let that = this;
-    axios.get("http://localhost:3001/getuser").then((response) => {
-      that.setState({ username: response.data });
+    axios.get("http://localhost:3001/getusers").then((response) => {
+      console.log(response.data);
+      that.setState({ users: response.data });
     });
   }
 
   handleClick() {
     axios
-      .put("http://localhost:3001/updateusername", {
+      .put("http://localhost:3001/adduser", {
         username: this.state.username,
       })
       .then((response) => {
@@ -52,14 +53,14 @@ class User extends React.Component {
               }
             >
               {this.state.error
-                ? "Creation failed"
-                : "Successfully Created Project!"}
+                ? "User Creation failed"
+                : "Successfully Created User!"}
             </Alert>
           )}
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h5" align="center">
-            Set Username
+            Add Users
           </Typography>
         </Grid>
         <Grid item xs={12} align="center">

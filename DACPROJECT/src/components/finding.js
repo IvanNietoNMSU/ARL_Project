@@ -7,7 +7,6 @@ import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
 
 const Finding = (item) => {
-  console.log(item);
   return (
     <Grid item xs={12}>
       <Paper
@@ -28,6 +27,8 @@ const Finding = (item) => {
                 title: item.item.title,
                 pk: item.item.id,
                 taskID: item.item.taskID,
+                assigne: item.item.assignedTo,
+                status: item.item.status,
               }}
               style={{ textDecoration: "none", color: "inherit" }}
             >
