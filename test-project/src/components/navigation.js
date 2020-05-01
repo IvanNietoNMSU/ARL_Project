@@ -211,14 +211,14 @@ function Navigation(props) {
           </Link>
 
           {/*User button*/}
-          {/* <Link to="/User" style={{ textDecoration: "none", color: "white" }}>
+          <Link to="/User" style={{ textDecoration: "none", color: "white" }}>
             <ListItem button key="deleteProject">
               <ListItemIcon>
                 <AccountCircleIcon style={{ color: "#F5DA65" }} />
               </ListItemIcon>
               <ListItemText primary="Delete Project" />
             </ListItem>
-          </Link> */}
+          </Link>
         </List>
         <Divider />
         {/* Projects */}
