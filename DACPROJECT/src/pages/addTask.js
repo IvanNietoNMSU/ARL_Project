@@ -30,9 +30,13 @@ function AddFinding(props) {
   const [desc, setDesc] = useState("");
   const [alert, setAlert] = useState(false);
   const [error, setError] = useState(false);
-  const [assigne, setAssigne] = useState(props.location.assigne);
+  const [assigne, setAssigne] = useState(
+    props.location.assigne ? props.location.assigne : "none"
+  );
   const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState(props.location.status);
+  const [status, setStatus] = useState(
+    props.location.status ? props.location.status : "To Do"
+  );
   const [open2, setOpen2] = useState(false);
   const [users, setUsers] = useState([]);
   const [flag, setFlag] = useState(true);
