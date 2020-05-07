@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import EditIcon from "@material-ui/icons/Edit";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -32,6 +33,7 @@ const Task = (item, project) => {
             ...response.data[i],
             project: item.project,
             taskID: item.item.id,
+            alert: item.item.alert,
           };
         setItems(response.data);
       });
@@ -58,6 +60,7 @@ const Task = (item, project) => {
               onClick={() => {}}
               startIcon={<EditIcon />}
               align="right"
+              key={"finding" + item.item.title}
               variant="outlined"
               color="default"
               size="small"
@@ -66,6 +69,44 @@ const Task = (item, project) => {
               Add Finding
             </Button>
           </Link>
+          <Link
+            to={{
+              pathname: "/AddTask",
+              AddFindingProps: item.project,
+              ...item,
+            }}
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <Button
+              onClick={() => {}}
+              startIcon={<EditIcon />}
+              align="right"
+              key={"edit" + item.item.title}
+              variant="outlined"
+              color="default"
+              size="small"
+              style={{ backgroundColor: "#f1f3f5" }}
+            >
+              Edit Task
+            </Button>
+          </Link>
+          <Button
+            key={item.item.id + item.item.project + "delete"}
+            onClick={() => {
+              item.item.alert({ type: item.item.type, id: item.item.id });
+            }}
+            startIcon={<DeleteIcon />}
+            align="right"
+            variant="outlined"
+            color="default"
+            size="small"
+            style={{ backgroundColor: "#f1f3f5" }}
+          >
+            Delete Task
+          </Button>
         </Grid>
       </Grid>
       <Grid item xs={12}>

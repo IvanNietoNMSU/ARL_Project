@@ -14,8 +14,50 @@ class AllNotes extends React.Component {
     this.state = {
       alert: false,
       error: false,
+      delete: false,
+      msg: "",
+      severity: "success",
+      target: {},
     };
     this.handleClickExport = this.handleClickExport.bind(this);
+    this.handleDeleteProject = this.handleDeleteProject.bind(this);
+  }
+
+  deleteProject() {
+    console.log(this.state.target);
+    axios
+      .put("http://localhost:3001/deleteentry", {
+        type: this.state.target.type,
+        id: this.state.target.id,
+        project: this.props.location.AllNotesProps,
+      })
+      .then((response) => {
+        this.setState({ alert: true });
+        if (response.data.status !== 200)
+          this.setState({
+            error: true,
+            msg: "Delete Failed",
+            severity: "error",
+          });
+        else this.setState({ msg: "Successfully Deleted Entry!" });
+      })
+      .catch(
+        this.setState({
+          error: true,
+          msg: "Export Failed",
+          severity: "error",
+        })
+      );
+  }
+
+  handleDeleteProject(e) {
+    this.setState({
+      alert: true,
+      delete: true,
+      msg: "Are you sure you want to delete this " + e.type + "?",
+      severity: "warning",
+      target: e,
+    });
   }
 
   handleClickExport() {
@@ -24,10 +66,27 @@ class AllNotes extends React.Component {
         name: this.props.location.AllNotesProps,
       })
       .then((response) => {
-        console.log(response.data);
         this.setState({ alert: true });
-        if (response.data.status !== 200) this.setState({ error: true });
-      });
+        if (response.data.status !== 200)
+          this.setState({
+            error: true,
+            msg: "Export Failed",
+            severity: "error",
+          });
+        else
+          this.setState({
+            msg: "Successfully Exported Project!",
+            severity: "success",
+            error: false,
+          });
+      })
+      .catch(
+        this.setState({
+          error: true,
+          msg: "Export Failed",
+          severity: "error",
+        })
+      );
   }
 
   render() {
@@ -36,22 +95,27 @@ class AllNotes extends React.Component {
         <Grid item xs={12}>
           {!!this.state.alert && (
             <Alert
-              severity={this.state.error ? "error" : "success"}
+              severity={this.state.severity}
               action={
                 <Button
                   color="inherit"
                   size="small"
                   onClick={() => {
-                    this.setState({ alert: false });
+                    if (this.state.delete) this.deleteProject();
+                    this.setState({
+                      alert: false,
+                      error: false,
+                      delete: false,
+                      msg: "",
+                      severity: "success",
+                    });
                   }}
                 >
-                  CLOSE
+                  {this.state.delete ? "YES DELETE" : "CLOSE"}
                 </Button>
               }
             >
-              {this.state.error
-                ? "Export failed"
-                : "Successfully Exported Project!"}
+              {this.state.msg}
             </Alert>
           )}
         </Grid>
@@ -119,6 +183,7 @@ class AllNotes extends React.Component {
             name={this.props.location.AllNotesProps}
             props={this.props}
             key={this.props.location.AllNotesProps}
+            alert={this.handleDeleteProject}
           />
         </Grid>
       </Grid>

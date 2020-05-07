@@ -25,18 +25,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AddFinding(props) {
+  const taskProps = props.location.item;
   // eslint-disable-next-line
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
+  const [title, setTitle] = useState(taskProps ? taskProps.title : "");
+  const [desc, setDesc] = useState(taskProps ? taskProps.description : "");
   const [alert, setAlert] = useState(false);
   const [error, setError] = useState(false);
   const [assigne, setAssigne] = useState(
-    props.location.assigne ? props.location.assigne : "none"
+    taskProps ? taskProps.assignedTo : "none"
   );
   const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState(
-    props.location.status ? props.location.status : "To Do"
-  );
+  const [status, setStatus] = useState(taskProps ? taskProps.status : "To Do");
   const [open2, setOpen2] = useState(false);
   const [users, setUsers] = useState([]);
   const [flag, setFlag] = useState(true);
@@ -54,7 +53,6 @@ function AddFinding(props) {
   const getUsers = () => {
     setFlag(false);
     axios.get("http://localhost:3001/getusers").then((response) => {
-      console.log(response.data);
       setUsers(response.data);
     });
   };
@@ -62,6 +60,7 @@ function AddFinding(props) {
   if (flag) getUsers();
 
   const handleClick = () => {
+    const id = taskProps ? taskProps.id : -1;
     axios
       .put(
         "http://localhost:3001/addtask?projectname=" +
@@ -73,14 +72,16 @@ function AddFinding(props) {
           "&assigne=" +
           assigne +
           "&status=" +
-          status
+          status +
+          "&id=" +
+          id
       )
       .then((response) => {
         setAlert(true);
         if (response.status !== 200) setError(true);
       });
   };
-
+  console.log(props);
   if (props.location.AddFindingProps !== undefined)
     return (
       <Grid container spacing={2}>
@@ -181,7 +182,7 @@ function AddFinding(props) {
               id="description"
               label="Description"
               multiline
-              variant="outlined"
+              variant="filled"
               value={desc}
               onChange={(e) => {
                 setDesc(e.target.value);

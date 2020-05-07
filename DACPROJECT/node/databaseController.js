@@ -197,14 +197,14 @@ module.exports = {
         if (err) {
           console.log(err);
           reject();
-          return err;
+          return { ...err, status: 500 };
         }
         results = rows;
         resolve();
       });
     });
     await db.close();
-    return results;
+    return { ...results, status: 200 };
   },
 
   deleteProject: async (projects) => {

@@ -76,7 +76,11 @@ const Items = (props) => {
       .get("http://localhost:3001/getentries?name=" + props.name)
       .then((response) => {
         for (let i = 0; response.data[i]; i++)
-          response.data[i] = { ...response.data[i], project: props.name };
+          response.data[i] = {
+            ...response.data[i],
+            project: props.name,
+            alert: props.alert,
+          };
         setItems(response.data);
       });
     setFlag(!flag);

@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const {
+  deleteEntry,
   queryTable,
   insertQuery,
   initialize,
@@ -124,7 +125,17 @@ async function server() {
         req.query.desc +
         '" ';
       const sql = "INSERT INTO tasks (" + columns + ") VALUES ( " + data + ")";
-      const response = await insertQuery(req.query.projectname, sql);
+      const sqlUpdate =
+        "UPDATE tasks SET (" +
+        columns +
+        ") = ( " +
+        data +
+        ") WHERE id=" +
+        req.query.id;
+      const response = await insertQuery(
+        req.query.projectname,
+        req.query.id > -1 ? sqlUpdate : sql
+      );
       res.send(response);
     }
   });
@@ -202,6 +213,32 @@ async function server() {
       'INSERT INTO users( userName ) VALUES ( "' + req.body.username + '" )';
     const response = await insertQuery("root", sql);
     res.send(response);
+  });
+
+  app.put("/deleteentry", async (req, res) => {
+    if (req.body.type === "finding") {
+      const sql = "DELETE FROM findings WHERE id=?";
+      const result = await deleteEntry(req.body.project, sql, req.body.id);
+      res.send(result);
+    } else {
+      const sql = "DELETE FROM tasks WHERE id=?";
+      const result = await deleteEntry(
+        req.body.project,
+        sql,
+        req.body.id
+      ).catch((err) => {
+        console.log(err);
+      });
+      const findingSql = "DELETE FROM findings WHERE taskid=?";
+      const findingResult = await deleteEntry(
+        req.body.project,
+        findingSql,
+        req.body.id
+      ).catch((err) => {
+        console.log(err);
+      });
+      res.send(findingResult);
+    }
   });
 
   initialize();
