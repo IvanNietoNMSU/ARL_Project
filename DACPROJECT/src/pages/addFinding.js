@@ -57,7 +57,6 @@ function AddFinding(props) {
   const getUsers = () => {
     setFlag(false);
     axios.get("http://localhost:3001/getusers").then((response) => {
-      console.log(response.data);
       setUsers(response.data);
     });
   };

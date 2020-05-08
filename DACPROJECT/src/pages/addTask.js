@@ -81,7 +81,6 @@ function AddFinding(props) {
         if (response.status !== 200) setError(true);
       });
   };
-  console.log(props);
   if (props.location.AddFindingProps !== undefined)
     return (
       <Grid container spacing={2}>
