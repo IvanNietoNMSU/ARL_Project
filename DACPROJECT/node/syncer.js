@@ -95,9 +95,12 @@ module.exports = {
           // build the grpc object from the fields pulled out of the db
           // entry
           // status is useless right now, but it is nice to return something
+          let id;
+          if(item.taskId == 0) id = 0;
+          else id =  item.taskId + random;
           client.syncData(
             {
-              taskId: item.taskId + random,
+              taskId: id,
               type: item.type,
               title: item.title,
               assignedTo: item.assignedTo,
