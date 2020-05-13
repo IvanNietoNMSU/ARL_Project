@@ -31,6 +31,18 @@ async function syncData(call, callback) {
   console.log("[*] End recieved data [*]");
 
   // insert into the desired database here
+
+  let sql;
+  if(call.request.type !== 'finding'){
+    let data =',"task", "' +
+    call.request.title +
+    '", "none", "To Do", "' +
+    call.request.description +
+    '" ';
+  let columns = " type , title, assignedTo , status, description ";
+  sql = "INSERT INTO tasks (" + columns + ") VALUES ( " + data + ")";
+  }
+  else {
   let data =
     call.request.taskId +
     ',"finding", "' +
@@ -39,7 +51,8 @@ async function syncData(call, callback) {
     call.request.description +
     '" ';
   let columns = " taskId , type , title, assignedTo , status, description ";
-  const sql = "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
+  sql = "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
+}
   let response = await insertQuery(call.request.database, sql);
   callback(null, { status: 200, response: response }); // + call.request.name});
 }
@@ -99,6 +112,39 @@ module.exports = {
           );
         });
       });
+      db.all('SELECT * FROM tasks', [], (err, rows) => {
+        if (err) {
+          console.log("error blah");
+          return err;
+        }
+        console.log("Sending data over!");
+
+        for (let i = 0; rows[i]; i++)
+          rows[i] = { ...rows[i], project: database };
+
+        rows.map((item) => {
+          // send entry to server through grpc connection
+          // build the grpc object from the fields pulled out of the db
+          // entry
+          // status is useless right now, but it is nice to return something
+          client.syncData(
+            {
+              taskId: 0,
+              type: item.type,
+              title: item.title,
+              assignedTo: item.assignedTo,
+              status: item.status,
+              description: item.description,
+              database: item.project,
+              id: item.id,
+            },
+            function (err, response) {
+              if (err) console.log(err);
+              else console.log("Status:", response.status);
+            }
+          );
+        });
+      })
       db.close();
     });
   },
