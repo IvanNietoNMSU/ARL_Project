@@ -34,12 +34,12 @@ async function syncData(call, callback) {
 
   let sql;
   if(call.request.type !== 'finding'){
-    let data =',"task", "' +
+    let data ='"' + call.request.taskId + '",' + '"task", "' +
     call.request.title +
-    '", "none", "To Do", "' +
+    '", "' + call.request.assignedTo +'", "' + call.request.status + '", "' +
     call.request.description +
     '" ';
-  let columns = " type , title, assignedTo , status, description ";
+  let columns = "id, type , title, assignedTo , status, description ";
   sql = "INSERT INTO tasks (" + columns + ") VALUES ( " + data + ")";
   }
   else {
@@ -47,7 +47,7 @@ async function syncData(call, callback) {
     call.request.taskId +
     ',"finding", "' +
     call.request.title +
-    '", "none", "To Do", "' +
+    '", "' + call.request.assignedTo +'", "' + call.request.status + '", "' +
     call.request.description +
     '" ';
   let columns = " taskId , type , title, assignedTo , status, description ";
@@ -78,6 +78,7 @@ module.exports = {
     );
 
     let results = [];
+    const random = Math.random() * (10000 - 100) + 100;
     let promise = new Promise((resolve, reject) => {
       db.all("SELECT * FROM findings;", [], (err, rows) => {
         if (err) {
@@ -96,7 +97,7 @@ module.exports = {
           // status is useless right now, but it is nice to return something
           client.syncData(
             {
-              taskId: item.taskId,
+              taskId: item.taskId + random,
               type: item.type,
               title: item.title,
               assignedTo: item.assignedTo,
@@ -129,7 +130,7 @@ module.exports = {
           // status is useless right now, but it is nice to return something
           client.syncData(
             {
-              taskId: 0,
+              taskId: item.id + random,
               type: item.type,
               title: item.title,
               assignedTo: item.assignedTo,
