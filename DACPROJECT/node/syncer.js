@@ -31,15 +31,28 @@ async function syncData(call, callback) {
   console.log("[*] End recieved data [*]");
 
   // insert into the desired database here
+
+  let sql;
+  if(call.request.type !== 'finding'){
+    let data ='"' + call.request.taskId + '",' + '"task", "' +
+    call.request.title +
+    '", "' + call.request.assignedTo +'", "' + call.request.status + '", "' +
+    call.request.description +
+    '" ';
+  let columns = "id, type , title, assignedTo , status, description ";
+  sql = "INSERT INTO tasks (" + columns + ") VALUES ( " + data + ")";
+  }
+  else {
   let data =
     call.request.taskId +
     ',"finding", "' +
     call.request.title +
-    '", "none", "To Do", "' +
+    '", "' + call.request.assignedTo +'", "' + call.request.status + '", "' +
     call.request.description +
     '" ';
   let columns = " taskId , type , title, assignedTo , status, description ";
-  const sql = "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
+  sql = "INSERT INTO findings (" + columns + ") VALUES ( " + data + ")";
+}
   let response = await insertQuery(call.request.database, sql);
   callback(null, { status: 200, response: response }); // + call.request.name});
 }
@@ -65,6 +78,7 @@ module.exports = {
     );
 
     let results = [];
+    const random = Math.random() * (10000 - 100) + 100;
     let promise = new Promise((resolve, reject) => {
       db.all("SELECT * FROM findings;", [], (err, rows) => {
         if (err) {
@@ -81,9 +95,12 @@ module.exports = {
           // build the grpc object from the fields pulled out of the db
           // entry
           // status is useless right now, but it is nice to return something
+          let id;
+          if(item.taskId == 0) id = 0;
+          else id =  item.taskId + random;
           client.syncData(
             {
-              taskId: item.taskId,
+              taskId: id,
               type: item.type,
               title: item.title,
               assignedTo: item.assignedTo,
@@ -99,6 +116,39 @@ module.exports = {
           );
         });
       });
+      db.all('SELECT * FROM tasks', [], (err, rows) => {
+        if (err) {
+          console.log("error blah");
+          return err;
+        }
+        console.log("Sending data over!");
+
+        for (let i = 0; rows[i]; i++)
+          rows[i] = { ...rows[i], project: database };
+
+        rows.map((item) => {
+          // send entry to server through grpc connection
+          // build the grpc object from the fields pulled out of the db
+          // entry
+          // status is useless right now, but it is nice to return something
+          client.syncData(
+            {
+              taskId: item.id + random,
+              type: item.type,
+              title: item.title,
+              assignedTo: item.assignedTo,
+              status: item.status,
+              description: item.description,
+              database: item.project,
+              id: item.id,
+            },
+            function (err, response) {
+              if (err) console.log(err);
+              else console.log("Status:", response.status);
+            }
+          );
+        });
+      })
       db.close();
     });
   },
